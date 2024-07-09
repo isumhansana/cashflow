@@ -82,7 +82,7 @@ class _LoginState extends State<Login> {
                 ),
               ),
               GestureDetector(
-                onTap: (){},
+                onTap: () => Navigator.pushNamed(context, '/register'),
                 child: const Text(
                   "Register Here",
                   style: TextStyle(

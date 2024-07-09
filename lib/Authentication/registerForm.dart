@@ -101,7 +101,7 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: (){},
+                  onTap: () => Navigator.pushNamed(context, '/login'),
                   child: const Text(
                     "Login Here",
                     style: TextStyle(
@@ -114,6 +114,6 @@ class _RegisterState extends State<Register> {
             ),
           )
       ),
-    );;
+    );
   }
 }
