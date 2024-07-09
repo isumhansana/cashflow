@@ -37,7 +37,7 @@ class _RegisterState extends State<Register> {
                     fontSize: 25,
                   ),
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 30),
                 TextFormField(
                   decoration: InputDecoration(
                       labelText: "User Name",
@@ -92,7 +92,7 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 100),
+                const SizedBox(height: 50),
                 const Text(
                   "Already have an account?",
                   style: TextStyle(
