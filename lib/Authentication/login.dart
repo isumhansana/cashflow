@@ -1,7 +1,24 @@
+import 'package:cashflow/Authentication/AuthService.dart';
 import 'package:flutter/material.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
+
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final _auth = AuthService();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +51,7 @@ class Login extends StatelessWidget {
               ),
               const SizedBox(height: 50),
               TextFormField(
+                controller: _emailController,
                 decoration: InputDecoration(
                   labelText: "Email",
                   border: OutlineInputBorder(
@@ -44,6 +62,7 @@ class Login extends StatelessWidget {
               ),
               const SizedBox(height: 15),
               TextFormField(
+                controller: _passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                     labelText: "Password",
@@ -54,7 +73,7 @@ class Login extends StatelessWidget {
               ),
               const SizedBox(height: 25),
               MaterialButton(
-                onPressed: (){},
+                onPressed: _login,
                 color: const Color(0xff235AE8),
                 minWidth: 150,
                 height: 50,
@@ -77,7 +96,7 @@ class Login extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () => Navigator.pushNamed(context, '/register'),
+                onTap: () => Navigator.pushReplacementNamed(context, '/register'),
                 child: const Text(
                   "Register Here",
                   style: TextStyle(
@@ -91,5 +110,15 @@ class Login extends StatelessWidget {
         )
       ),
     );
+  }
+  _login() async {
+    final user = await _auth.loginWithEmailAndPassword(_emailController.text, _passwordController.text);
+    if (user != null) {
+      Navigator.pushReplacementNamed(context, '/profile');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Login Failed! Check your Credentials"))
+      );
+    }
   }
 }

@@ -1,4 +1,6 @@
+import 'package:cashflow/Authentication/AuthService.dart';
 import 'package:cashflow/Authentication/InputValidation.dart';
+import 'package:cashflow/Authentication/login.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
@@ -9,6 +11,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final _auth = AuthService();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -139,7 +142,7 @@ class _RegisterState extends State<Register> {
                 ),
                 const SizedBox(height: 25),
                 MaterialButton(
-                  onPressed: (){},
+                  onPressed: _signup,
                   color: const Color(0xff235AE8),
                   minWidth: 150,
                   height: 50,
@@ -162,7 +165,7 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, '/login'),
+                  onTap: () => Navigator.pushReplacementNamed(context, '/login'),
                   child: const Text(
                     "Login Here",
                     style: TextStyle(
@@ -176,5 +179,18 @@ class _RegisterState extends State<Register> {
           )
       ),
     );
+  }
+  _signup() async {
+    final user = await _auth.createUserWithEmailAndPassword(_emailController.text, _passwordController.text);
+    if (user != null) {
+      Navigator.pushReplacementNamed(context, '/login');
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Account Created! Please Login to Continue"))
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("SignUp Failed! Please Check Your Connection"))
+      );
+    }
   }
 }

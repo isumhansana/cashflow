@@ -6,8 +6,8 @@ class UsernameValidator {
       return 'Username is required';
     }
 
-    //check if username has only letters and numbers
-    if(!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(value)) {
+    //check if username has only letters and numbers and Space
+    if(!RegExp(r'^[a-zA-Z0-9 ]+$').hasMatch(value)) {
       return 'Username should only contain letters and numbers';
     }
 
