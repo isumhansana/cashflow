@@ -1,4 +1,5 @@
 import 'package:cashflow/Authentication/AuthService.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -10,6 +11,15 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final _auth = AuthService();
+  final _user = FirebaseAuth.instance.currentUser;
+  final TextEditingController _userEmail = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _userEmail.text = _user!.email.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,14 +47,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const Text(
               "User Name: Example Name",
               style: TextStyle(
-                  fontSize: 23
+                  fontSize: 22
               ),
             ),
             const SizedBox(height: 12),
-            const Text(
-              "Email: Example Email",
-              style: TextStyle(
-                  fontSize: 23
+            Text(
+              "Email: ${_userEmail.text}",
+              style: const TextStyle(
+                  fontSize: 22
               ),
             ),
             const SizedBox(height: 40),
@@ -52,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 MaterialButton(
-                  onPressed: (){},
+                  onPressed: _resetPassword,
                   color: const Color(0xff235AE8),
                   minWidth: 250,
                   height: 50,
@@ -103,5 +113,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   _logout() async {
     _auth.signOut();
     Navigator.pushReplacementNamed(context, '/login');
+  }
+
+  _resetPassword() async {
+    final msg = await _auth.passwordReset(_userEmail.text);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(msg))
+    );
   }
 }
