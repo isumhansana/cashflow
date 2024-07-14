@@ -1,6 +1,6 @@
 import 'package:cashflow/Authentication/AuthService.dart';
 import 'package:cashflow/Authentication/InputValidation.dart';
-import 'package:cashflow/Authentication/login.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
@@ -186,6 +186,10 @@ class _RegisterState extends State<Register> {
   _signup() async {
     final user = await _auth.createUserWithEmailAndPassword(_emailController.text, _passwordController.text);
     if (user != null) {
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+        'name': _usernameController.text.trim(),
+        'email': user.email
+      });
       Navigator.pushReplacementNamed(context, '/login');
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Account Created! Please Login to Continue"))
