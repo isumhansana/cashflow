@@ -11,6 +11,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  int myIndex = 0;
   final _auth = AuthService();
   final _user = FirebaseAuth.instance.currentUser;
   final TextEditingController _userEmail = TextEditingController();
@@ -39,6 +40,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         centerTitle: true,
         backgroundColor: const Color(0xFF102C40),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          onTap: (index){
+            setState(() {
+              myIndex = index;
+            });
+            if(myIndex == 1){
+              Navigator.pushNamed(context, '/dashboard');
+            } else if(myIndex == 2){
+              Navigator.pushNamed(context, '/budget');
+            } else if(myIndex == 3){
+              Navigator.pushNamed(context, '/reminder');
+            }
+          },
+          currentIndex: myIndex,
+          backgroundColor: const Color(0xFF102C40),
+          selectedItemColor: Colors.white,
+          unselectedItemColor: const Color(0xFF636363),
+          items: const [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.dashboard),
+                label: "Dashboard",
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.insert_chart_outlined),
+                label: "Budget",
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.notifications_active_outlined),
+                label: "Reminder",
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person_outline),
+                label: "Profile",
+            )
+          ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
