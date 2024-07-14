@@ -117,7 +117,7 @@ class _LoginState extends State<Login> {
   _login() async {
     final user = await _auth.loginWithEmailAndPassword(_emailController.text, _passwordController.text);
     if (user != null) {
-      Navigator.pushReplacementNamed(context, '/profile');
+      Navigator.pushReplacementNamed(context, '/dashboard');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Login Failed! Check your Credentials"))

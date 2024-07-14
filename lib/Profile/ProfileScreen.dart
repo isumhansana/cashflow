@@ -11,7 +11,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  int myIndex = 0;
+  int myIndex = 3;
   final _auth = AuthService();
   final _user = FirebaseAuth.instance.currentUser;
   final TextEditingController _userEmail = TextEditingController();
@@ -47,12 +47,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             setState(() {
               myIndex = index;
             });
-            if(myIndex == 1){
-              Navigator.pushNamed(context, '/dashboard');
+            if(myIndex == 0){
+              Navigator.pushReplacementNamed(context, '/dashboard');
+            } else if(myIndex == 1){
+              Navigator.pushReplacementNamed(context, '/budget');
             } else if(myIndex == 2){
-              Navigator.pushNamed(context, '/budget');
-            } else if(myIndex == 3){
-              Navigator.pushNamed(context, '/reminder');
+              Navigator.pushReplacementNamed(context, '/reminder');
             }
           },
           currentIndex: myIndex,
