@@ -45,16 +45,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const SizedBox(height: 30),
             const Text(
-              "User Name: Example Name",
+              "User Name",
               style: TextStyle(
                   fontSize: 22
               ),
             ),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(15, 3, 0, 0),
+              child: Text(
+                "Example Name",
+                style: TextStyle(
+                    fontSize: 22
+                ),
+              ),
+            ),
             const SizedBox(height: 12),
-            Text(
-              "Email: ${_userEmail.text}",
-              style: const TextStyle(
+            const Text(
+              "Email",
+              style: TextStyle(
                   fontSize: 22
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 3, 0, 0),
+              child: Text(
+                _userEmail.text,
+                style: const TextStyle(
+                    fontSize: 22
+                ),
               ),
             ),
             const SizedBox(height: 40),
