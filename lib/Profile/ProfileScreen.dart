@@ -1,4 +1,5 @@
 import 'package:cashflow/Authentication/AuthService.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -13,11 +14,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _auth = AuthService();
   final _user = FirebaseAuth.instance.currentUser;
   final TextEditingController _userEmail = TextEditingController();
+  final TextEditingController _userName = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _userEmail.text = _user!.email.toString();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _userEmail.dispose();
+    _userName.dispose();
   }
 
   @override
@@ -50,13 +59,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   fontSize: 22
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(15, 3, 0, 0),
-              child: Text(
-                "Example Name",
-                style: TextStyle(
-                    fontSize: 22
-                ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 3, 0, 0),
+              child: FutureBuilder(
+                future: _getName(),
+                builder: (context, _) {
+                  return Text(
+                    _userName.text,
+                    style: const TextStyle(
+                        fontSize: 22
+                    ),
+                  );
+                }
               ),
             ),
             const SizedBox(height: 12),
@@ -138,5 +152,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(msg))
     );
+  }
+
+  _getName() async {
+    await FirebaseFirestore.instance.collection('users').doc(_user!.uid).get().then((value){
+      _userName.text = value['name'];
+    });
   }
 }
