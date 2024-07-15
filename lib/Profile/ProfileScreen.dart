@@ -2,6 +2,7 @@ import 'package:cashflow/Authentication/AuthService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -101,8 +102,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               padding: const EdgeInsets.fromLTRB(15, 3, 0, 0),
               child: FutureBuilder(
                 future: _getName(),
-                builder: (context, _) {
-                  return Text(
+                builder: (context, snapshot) {
+                  return snapshot.connectionState == ConnectionState.waiting
+                      ? const CupertinoActivityIndicator()
+                      : Text(
                     _userName.text,
                     style: const TextStyle(
                         fontSize: 22

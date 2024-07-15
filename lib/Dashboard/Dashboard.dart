@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
@@ -12,6 +13,13 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    final catList = [
+      Categories(value: 10, color: Colors.green),
+      Categories(value: 30, color: Colors.red),
+      Categories(value: 20, color: Colors.blueAccent),
+      Categories(value: 40, color: Colors.purple),
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -62,18 +70,30 @@ class _DashboardState extends State<Dashboard> {
         children: [
           Container(
             color: const Color(0xFFD9D9D9),
-            height: (MediaQuery.of(context).size.height)/3,
+            height: (MediaQuery.of(context).size.height)/2.5,
             width: (MediaQuery.of(context).size.width),
-            child: const Padding(
-              padding: EdgeInsets.all(20.0),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                       "Month",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  AspectRatio(
+                    aspectRatio: 1.4,
+                    child: PieChart(
+                      PieChartData(
+                        sections: catList.map((data) => PieChartSectionData(
+                            value: data.value,
+                            color: data.color
+                        )).toList()
+                      )
                     ),
                   ),
                 ],
@@ -84,4 +104,14 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
   }
+}
+
+class Categories {
+  final double value;
+  final Color color;
+
+  Categories({
+    required this.value,
+    required this.color
+});
 }
