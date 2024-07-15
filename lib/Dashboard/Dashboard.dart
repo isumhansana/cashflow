@@ -58,6 +58,30 @@ class _DashboardState extends State<Dashboard> {
           )
         ],
       ),
+      body: Column(
+        children: [
+          Container(
+            color: const Color(0xFFD9D9D9),
+            height: (MediaQuery.of(context).size.height)/3,
+            width: (MediaQuery.of(context).size.width),
+            child: const Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                      "Month",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
