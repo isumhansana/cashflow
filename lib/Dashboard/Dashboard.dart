@@ -9,6 +9,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  int pieTouchedIndex = -1;
   int myIndex = 0;
 
   @override
@@ -89,11 +90,33 @@ class _DashboardState extends State<Dashboard> {
                     aspectRatio: 1.4,
                     child: PieChart(
                       PieChartData(
-                        sections: catList.map((data) => PieChartSectionData(
-                            value: data.value,
-                            color: data.color
-                        )).toList()
-                      )
+                        sections: catList.asMap().entries.map((mapEntry) {
+                          final index = mapEntry.key;
+                          final data = mapEntry.value;
+                          return PieChartSectionData(
+                              value: data.value,
+                              color: data.color,
+                              radius: pieTouchedIndex == index? 50 : 40,
+                              showTitle: pieTouchedIndex == index
+                          );
+                        }).toList(),
+                        pieTouchData: PieTouchData(
+                          touchCallback: (
+                            FlTouchEvent e,
+                            PieTouchResponse? r
+                          ) {
+                            setState(() {
+                              if (!e.isInterestedForInteractions ||
+                                  r == null ||
+                                  r.touchedSection == null) {
+                                    pieTouchedIndex = -1;
+                                    return;
+                                  }
+                              pieTouchedIndex = r.touchedSection!.touchedSectionIndex;
+                            });
+                          }
+                        )
+                      ),
                     ),
                   ),
                 ],
