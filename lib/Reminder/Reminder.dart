@@ -58,6 +58,15 @@ class _ReminderState extends State<Reminder> {
           )
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){},
+        backgroundColor: const Color(0xFF235AE8),
+        shape: const CircleBorder(),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }
