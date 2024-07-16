@@ -97,35 +97,79 @@ class _DashboardState extends State<Dashboard> {
                   const SizedBox(height: 10),
                   AspectRatio(
                     aspectRatio: 1.4,
-                    child: PieChart(
-                      PieChartData(
-                        sections: catList.asMap().entries.map((mapEntry) {
-                          final index = mapEntry.key;
-                          final data = mapEntry.value;
-                          return PieChartSectionData(
-                              value: data.value,
-                              color: data.color,
-                              radius: pieTouchedIndex == index? 50 : 40,
-                              showTitle: pieTouchedIndex == index
-                          );
-                        }).toList(),
-                        pieTouchData: PieTouchData(
-                          touchCallback: (
-                            FlTouchEvent e,
-                            PieTouchResponse? r
-                          ) {
-                            setState(() {
-                              if (!e.isInterestedForInteractions ||
-                                  r == null ||
-                                  r.touchedSection == null) {
-                                    pieTouchedIndex = -1;
-                                    return;
-                                  }
-                              pieTouchedIndex = r.touchedSection!.touchedSectionIndex;
-                            });
-                          }
+                    child: Stack(
+                      children: [
+                        PieChart(
+                        PieChartData(
+                          sections: catList.asMap().entries.map((mapEntry) {
+                            final index = mapEntry.key;
+                            final data = mapEntry.value;
+                            return PieChartSectionData(
+                                value: data.value,
+                                color: data.color,
+                                radius: pieTouchedIndex == index? 50 : 40,
+                                showTitle: pieTouchedIndex == index
+                            );
+                          }).toList(),
+                          pieTouchData: PieTouchData(
+                            touchCallback: (
+                              FlTouchEvent e,
+                              PieTouchResponse? r
+                            ) {
+                              setState(() {
+                                if (!e.isInterestedForInteractions ||
+                                    r == null ||
+                                    r.touchedSection == null) {
+                                      pieTouchedIndex = -1;
+                                      return;
+                                    }
+                                pieTouchedIndex = r.touchedSection!.touchedSectionIndex;
+                              });
+                            }
+                            )
+                          ),
+                        ),
+                        const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                    "Income: Rs.2 000 000",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 7),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                    "Expense: Rs.1 000 000",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 7),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                    "Balance: Rs.1 000 000",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         )
-                      ),
+                      ]
                     ),
                   ),
                 ],
