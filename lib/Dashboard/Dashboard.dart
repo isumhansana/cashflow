@@ -107,7 +107,7 @@ class _DashboardState extends State<Dashboard> {
                             return PieChartSectionData(
                                 value: data.value,
                                 color: data.color,
-                                radius: pieTouchedIndex == index? 50 : 40,
+                                radius: pieTouchedIndex == index? 40 : 34,
                                 showTitle: pieTouchedIndex == index
                             );
                           }).toList(),
