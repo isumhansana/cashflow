@@ -164,19 +164,81 @@ class _DashboardState extends State<Dashboard> {
                       );
                     }).toList(),
                   ),
-                  Column(
-                    children: catList.asMap().entries.map((mapEntry){
-                      return Row(
-                        children: [],
-                      );
-                    }).toList(),
-                  )
                 ],
               ),
             ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Categories",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20
+                  ),
+                ),
+                const SizedBox(height: 20),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: catList.asMap().entries.map((mapEntry){
+                        final budget = mapEntry.value.budget;
+                        final value = mapEntry.value.value;
+                        return Column(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors.black
+                                  ),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)
+                                  )
+                              ),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        mapEntry.value.title,
+                                        style: TextStyle(
+                                            color: mapEntry.value.color,
+                                            fontWeight: FontWeight.bold
+                                        ),
+                                      ),
+                                      Text(value.toString())
+                                    ],
+                                  ),
+                                  Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        budget==null
+                                            ? const Text("No budget")
+                                            : Text(
+                                          "Remaining Budget: Rs. ${budget-value}",
+                                          style: TextStyle(
+                                              color: Color(budget>value? 0xFF03AB00: (budget<value? 0xFFF60707: 0xFF000000))
+                                          ),
+                                        )
+                                      ]
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  ]
+                ),
           )
-        ],
-      ),
-    );
+              ],
+            ),
+          );
   }
 }
