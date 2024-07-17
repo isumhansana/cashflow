@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../NavBar.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -42,43 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         centerTitle: true,
         backgroundColor: const Color(0xFF102C40),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        onTap: (index) {
-          setState(() {
-            myIndex = index;
-          });
-          if (myIndex == 0) {
-            Navigator.pushReplacementNamed(context, '/dashboard');
-          } else if (myIndex == 1) {
-            Navigator.pushReplacementNamed(context, '/budget');
-          } else if (myIndex == 2) {
-            Navigator.pushReplacementNamed(context, '/reminder');
-          }
-        },
-        currentIndex: myIndex,
-        backgroundColor: const Color(0xFF102C40),
-        selectedItemColor: Colors.white,
-        unselectedItemColor: const Color(0xFF636363),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: "Dashboard",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.insert_chart_outlined),
-            label: "Budget",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_active_outlined),
-            label: "Reminder",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: "Profile",
-          )
-        ],
-      ),
+      bottomNavigationBar: NavBar(myIndex),
       body: FutureBuilder(
           future: _getName(),
           builder: (context, snapshot) {

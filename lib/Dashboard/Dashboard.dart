@@ -1,5 +1,9 @@
+import 'package:cashflow/Categories/Categories.dart';
+import 'package:cashflow/NavBar.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+
+import 'PieChartMiddle.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -17,13 +21,8 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    final catList = [
-      Categories(title: "Transport", value: 10, color: Colors.green),
-      Categories(title: "Food", value: 30, color: Colors.red),
-      Categories(title: "Health", value: 20, color: Colors.blueAccent),
-      Categories(title: "Shopping", value: 40, color: Colors.purple),
-      Categories(title: "Other", value: 40, color: Colors.yellow),
-    ];
+
+    final catList = FinalCategories().catList;
 
     return Scaffold(
       appBar: AppBar(
@@ -34,43 +33,7 @@ class _DashboardState extends State<Dashboard> {
         centerTitle: true,
         backgroundColor: const Color(0xFF102C40),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        onTap: (index){
-          setState(() {
-            myIndex = index;
-          });
-          if(myIndex == 1){
-            Navigator.pushReplacementNamed(context, '/budget');
-          } else if(myIndex == 2){
-            Navigator.pushReplacementNamed(context, '/reminder');
-          } else if(myIndex == 3){
-            Navigator.pushReplacementNamed(context, '/profile');
-          }
-        },
-        currentIndex: myIndex,
-        backgroundColor: const Color(0xFF102C40),
-        selectedItemColor: Colors.white,
-        unselectedItemColor: const Color(0xFF636363),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: "Dashboard",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.insert_chart_outlined),
-            label: "Budget",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_active_outlined),
-            label: "Reminder",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: "Profile",
-          )
-        ],
-      ),
+      bottomNavigationBar: NavBar(myIndex),
       floatingActionButton: FloatingActionButton(
         onPressed: (){},
         backgroundColor: const Color(0xFF235AE8),
@@ -174,46 +137,7 @@ class _DashboardState extends State<Dashboard> {
                             )
                           ),
                         ),
-                        const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                    "Income: Rs.2 000 000",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 7),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                    "Expense: Rs.1 000 000",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 7),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                    "Balance: Rs.1 000 000",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )
+                        const PieChartMiddle()
                       ]
                     ),
                   ),
@@ -239,6 +163,13 @@ class _DashboardState extends State<Dashboard> {
                         ],
                       );
                     }).toList(),
+                  ),
+                  Column(
+                    children: catList.asMap().entries.map((mapEntry){
+                      return Row(
+                        children: [],
+                      );
+                    }).toList(),
                   )
                 ],
               ),
@@ -248,16 +179,4 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
   }
-}
-
-class Categories {
-  final String title;
-  final double value;
-  final Color color;
-
-  Categories({
-    required this.title,
-    required this.value,
-    required this.color
-});
 }
