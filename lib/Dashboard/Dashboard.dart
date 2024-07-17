@@ -169,7 +169,7 @@ class _DashboardState extends State<Dashboard> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(15.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -177,7 +177,7 @@ class _DashboardState extends State<Dashboard> {
                   "Categories",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20
+                    fontSize: 25
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -195,38 +195,49 @@ class _DashboardState extends State<Dashboard> {
                                       color: Colors.black
                                   ),
                                   borderRadius: const BorderRadius.all(
-                                      Radius.circular(5)
+                                      Radius.circular(10)
                                   )
                               ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        mapEntry.value.title,
-                                        style: TextStyle(
-                                            color: mapEntry.value.color,
-                                            fontWeight: FontWeight.bold
-                                        ),
-                                      ),
-                                      Text(value.toString())
-                                    ],
-                                  ),
-                                  Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        budget==null
-                                            ? const Text("No budget")
-                                            : Text(
-                                          "Remaining Budget: Rs. ${budget-value}",
+                                        Text(
+                                          mapEntry.value.title,
                                           style: TextStyle(
-                                              color: Color(budget>value? 0xFF03AB00: (budget<value? 0xFFF60707: 0xFF000000))
+                                              color: mapEntry.value.color,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20
+                                          ),
+                                        ),
+                                        Text(
+                                          "Rs. $value",
+                                          style: const TextStyle(
+                                            fontSize: 20
                                           ),
                                         )
-                                      ]
-                                  ),
-                                ],
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          budget==null
+                                              ? const Text("No budget")
+                                              : Text(
+                                            "Remaining Budget: Rs. ${budget-value}",
+                                            style: TextStyle(
+                                                color: Color(budget>value? 0xFF03AB00: (budget<value? 0xFFF60707: 0xFF000000)),
+                                                fontSize: 15
+                                            ),
+                                          )
+                                        ]
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             const SizedBox(height: 20),
