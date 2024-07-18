@@ -8,7 +8,7 @@ class NewEntryDialog extends StatefulWidget {
 }
 
 class _NewEntryDialogState extends State<NewEntryDialog> {
-  var _dropDownValue = "Income";
+  var _dropDownValue = "Expense";
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +46,14 @@ class _NewEntryDialogState extends State<NewEntryDialog> {
                   DropdownMenuItem(value: "Income", child: Text("Income"),),
                   DropdownMenuItem(value: "Expense", child: Text("Expense"),)
                 ],
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 16
+                ),
                 value: _dropDownValue,
                 itemHeight: 63,
+                underline: const SizedBox(),
                 isExpanded: true,
                 onChanged: dropDownCallBack
             ),
