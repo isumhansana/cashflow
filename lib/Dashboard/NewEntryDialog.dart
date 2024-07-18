@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
 class NewEntryDialog extends StatefulWidget {
   const NewEntryDialog({super.key});
@@ -8,7 +11,15 @@ class NewEntryDialog extends StatefulWidget {
 }
 
 class _NewEntryDialogState extends State<NewEntryDialog> {
-  var _dropDownValue = "Expense";
+  String? _dropDownValue;
+  DateTime? _selectedDate;
+
+  @override
+  void initState() {
+    _dropDownValue = "Expense";
+    _selectedDate = DateTime.now();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +68,38 @@ class _NewEntryDialogState extends State<NewEntryDialog> {
                 isExpanded: true,
                 onChanged: dropDownCallBack
             ),
-          )
+          ),
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            height: 63,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                    child: Text(
+                      DateFormat('dd/MM/yyyy').format(_selectedDate!),
+                      style: const TextStyle(
+                        fontSize: 15
+                      ),
+                    ),
+                ),
+                GestureDetector(
+                  onTap: () => _selectDate(context),
+                  child: const Icon(
+                    CupertinoIcons.calendar,
+                    color: Colors.black54,
+                    size: 28,
+                  ),
+                )
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
         ],
       ),
     );
@@ -67,6 +109,21 @@ class _NewEntryDialogState extends State<NewEntryDialog> {
     if (selectedValue!=null){
       setState(() {
         _dropDownValue = selectedValue;
+      });
+    }
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        firstDate: DateTime(2000),
+        lastDate: DateTime.now(),
+        initialDate: DateTime.now()
+    );
+
+    if(picked!=null) {
+      setState(() {
+        _selectedDate = picked;
       });
     }
   }
