@@ -1,4 +1,5 @@
 import 'package:cashflow/Categories/Categories.dart';
+import 'package:cashflow/Dashboard/NewEntryDialog.dart';
 import 'package:cashflow/NavBar.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,10 @@ class _DashboardState extends State<Dashboard> {
       ),
       bottomNavigationBar: NavBar(myIndex),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: () => showDialog(
+          context: context,
+          builder: (_) => const NewEntryDialog()
+        ),
         backgroundColor: const Color(0xFF235AE8),
         shape: const CircleBorder(),
         child: const Icon(
