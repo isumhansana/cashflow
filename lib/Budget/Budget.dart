@@ -2,6 +2,7 @@ import 'package:cashflow/Categories/Categories.dart';
 import 'package:flutter/material.dart';
 
 import '../NavBar.dart';
+import 'NewBudgetDialog.dart';
 
 class Budget extends StatefulWidget {
   const Budget({super.key});
@@ -27,7 +28,10 @@ class _BudgetState extends State<Budget> {
       ),
       bottomNavigationBar: NavBar(myIndex),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: () => showDialog(
+            context: context,
+            builder: (_) => const NewBudgetDialog()
+        ),
         backgroundColor: const Color(0xFF235AE8),
         shape: const CircleBorder(),
         child: const Icon(
