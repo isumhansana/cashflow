@@ -11,3 +11,7 @@ class Expenses {
     required this.date
   });
 }
+
+class ExpenseList {
+  final exList = <Expenses>[];
+}
