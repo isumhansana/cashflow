@@ -1,3 +1,4 @@
+import 'package:cashflow/Categories/Categories.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +13,8 @@ class NewEntryDialog extends StatefulWidget {
 class _NewEntryDialogState extends State<NewEntryDialog> {
   String? _dropDownValue;
   DateTime? _selectedDate;
+  String? _categoryDropDownValue;
+  final catList = FinalCategories().catList;
 
   @override
   void initState() {
@@ -102,6 +105,30 @@ class _NewEntryDialogState extends State<NewEntryDialog> {
                 ],
               ),
             ),
+            const SizedBox(height: 10),
+            _dropDownValue=="Expense" ? Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: DropdownButton(
+                  items: catList.asMap().entries.map((mapEntry){
+                    return DropdownMenuItem(value: mapEntry.value.title, child: Text(mapEntry.value.title));
+                  }).toList(),
+                  hint: const Text("Category"),
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 16
+                  ),
+                  value: _categoryDropDownValue,
+                  itemHeight: 63,
+                  underline: const SizedBox(),
+                  isExpanded: true,
+                  onChanged: categoryDropDownCallBack
+              ),
+            ) : const SizedBox(),
             const SizedBox(height: 16),
             MaterialButton(
               onPressed: (){},
@@ -131,6 +158,14 @@ class _NewEntryDialogState extends State<NewEntryDialog> {
     if (selectedValue!=null){
       setState(() {
         _dropDownValue = selectedValue;
+      });
+    }
+  }
+
+  void categoryDropDownCallBack(String? selectedValue) {
+    if (selectedValue!=null){
+      setState(() {
+        _categoryDropDownValue = selectedValue;
       });
     }
   }
