@@ -10,45 +10,48 @@ class PieChartMiddle extends StatefulWidget {
 class _PieChartMiddleState extends State<PieChartMiddle> {
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Income: Rs.2 000 000",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(context, '/incomes&expenses'),
+      child: const Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Income: Rs.2 000 000",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold
+                ),
               ),
-            ),
-          ],
-        ),
-        SizedBox(height: 7),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Expense: Rs.1 000 000",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold
+            ],
+          ),
+          SizedBox(height: 7),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Expense: Rs.1 000 000",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold
+                ),
               ),
-            ),
-          ],
-        ),
-        SizedBox(height: 7),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Balance: Rs.1 000 000",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold
+            ],
+          ),
+          SizedBox(height: 7),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Balance: Rs.1 000 000",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold
+                ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
