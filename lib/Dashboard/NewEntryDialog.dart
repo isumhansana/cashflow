@@ -1,5 +1,5 @@
 import 'package:cashflow/Categories/Categories.dart';
-import 'package:cashflow/DataHandling/ExpenseHandler.dart';
+import 'package:cashflow/Data/Expenses.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -136,7 +136,7 @@ class _NewEntryDialogState extends State<NewEntryDialog> {
             ) : const SizedBox(),
             const SizedBox(height: 16),
             MaterialButton(
-              onPressed: () => ExpenseHandler().addExpense(double.parse(_amountController.text), _descriptionController.text, _categoryDropDownValue.toString(), _selectedDate!),
+              onPressed: () => ExpenseList().addExpense(double.parse(_amountController.text), _descriptionController.text, _categoryDropDownValue.toString(), _selectedDate!),
               color: const Color(0xff235AE8),
               minWidth: 120,
               height: 43,

@@ -14,4 +14,9 @@ class Expenses {
 
 class ExpenseList {
   final exList = <Expenses>[];
+
+  Future addExpense(double amount, String description, String category, DateTime date) async {
+    exList.add(Expenses(amount: amount, description: description, category: category, date: date));
+  }
+
 }
