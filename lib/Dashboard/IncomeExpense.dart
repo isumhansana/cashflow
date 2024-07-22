@@ -15,7 +15,22 @@ class IncomeExpense extends StatelessWidget {
         centerTitle: true,
         backgroundColor: const Color(0xFF102C40),
       ),
-      body: Text(ExpenseList().exList.toString()),
+      body: Column(
+        children : ExpenseList().exList.asMap().entries.map((mapEntry){
+          return Column(
+            children: [
+              Row(
+                  children: [
+                    Text(mapEntry.value.category),
+                    Text(mapEntry.value.description),
+                    Text(mapEntry.value.date.toString()),
+                    Text(mapEntry.value.amount.toString())
+                  ]
+              )
+            ],
+          );
+        }).toList(),
+      )
     );
   }
 }
