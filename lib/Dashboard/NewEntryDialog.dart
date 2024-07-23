@@ -211,11 +211,11 @@ class _NewEntryDialogState extends State<NewEntryDialog> {
   }
 
   _add() async {
-    if (_categoryDropDownValue != null && _amountController.text != "" && _descriptionController.text != "") {
+    if ((_categoryDropDownValue != null || _dropDownValue == 'Income') && _amountController.text != "" && _descriptionController.text != "") {
       await FirebaseFirestore.instance
-          .collection('expense')
+          .collection('entries')
           .doc(_user!.uid)
-          .collection(_categoryDropDownValue!)
+          .collection(_categoryDropDownValue == null? _dropDownValue! : _categoryDropDownValue!)
           .add({
         'amount': _amountController.text,
         'description': _descriptionController.text,
