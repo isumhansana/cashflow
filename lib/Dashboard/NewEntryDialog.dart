@@ -1,3 +1,4 @@
+import 'package:cashflow/Authentication/InputValidation.dart';
 import 'package:cashflow/Categories/Categories.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,11 +22,26 @@ class _NewEntryDialogState extends State<NewEntryDialog> {
   String? _categoryDropDownValue;
   final catList = FinalCategories().catList;
 
+  String? _amountError;
+
   @override
   void initState() {
     _dropDownValue = "Expense";
     _selectedDate = DateTime.now();
+    _amountController.addListener(_validateAmount);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _amountController.dispose();
+  }
+
+  void _validateAmount() {
+    setState(() {
+      _amountError = NumberValidator.validate(_amountController.text);
+    });
   }
 
   @override
@@ -46,7 +62,9 @@ class _NewEntryDialogState extends State<NewEntryDialog> {
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10)
                 ),
+                errorText: _amountError
               ),
+              keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 10),
             TextFormField(

@@ -77,3 +77,15 @@ class PasswordConfirm {
     return null;
   }
 }
+
+class NumberValidator {
+  static String? validate(String value) {
+
+    //check if username has only letters and numbers and Space
+    if(!RegExp(r'^[0-9]+$').hasMatch(value)) {
+      return 'This Field accepts only Numbers';
+    }
+
+    return null;
+  }
+}
