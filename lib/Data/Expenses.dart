@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 class Expenses {
   final double amount;
   final String description;
@@ -13,10 +15,10 @@ class Expenses {
 }
 
 class ExpenseList {
-  List<Expenses> exList = List.empty(growable: true);
+  final exList = <Expenses>[];
+  final _user = FirebaseAuth.instance.currentUser;
 
-  void addExpense(double amount, String description, String category, DateTime date) {
-    exList.add(Expenses(amount: amount, description: description, category: category, date: date));
+  void getExpenses() async {
+
   }
-
 }

@@ -215,11 +215,12 @@ class _NewEntryDialogState extends State<NewEntryDialog> {
       await FirebaseFirestore.instance
           .collection('entries')
           .doc(_user!.uid)
-          .collection(_categoryDropDownValue == null? _dropDownValue! : _categoryDropDownValue!)
+          .collection(_dropDownValue!)
           .add({
         'amount': _amountController.text,
         'description': _descriptionController.text,
-        'date': _selectedDate
+        'date': _selectedDate,
+        'category': _dropDownValue=="Expense"? _categoryDropDownValue: _dropDownValue
       });
       Navigator.pop(context);
     } else {
