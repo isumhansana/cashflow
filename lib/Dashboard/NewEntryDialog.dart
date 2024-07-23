@@ -1,5 +1,6 @@
 import 'package:cashflow/Categories/Categories.dart';
-import 'package:cashflow/Data/Expenses.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +13,7 @@ class NewEntryDialog extends StatefulWidget {
 }
 
 class _NewEntryDialogState extends State<NewEntryDialog> {
+  final _user = FirebaseAuth.instance.currentUser;
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   String? _dropDownValue;
@@ -136,7 +138,7 @@ class _NewEntryDialogState extends State<NewEntryDialog> {
             ) : const SizedBox(),
             const SizedBox(height: 16),
             MaterialButton(
-              onPressed: () => ExpenseList().addExpense(double.parse(_amountController.text), _descriptionController.text, _categoryDropDownValue.toString(), _selectedDate!),
+              onPressed: _add,
               color: const Color(0xff235AE8),
               minWidth: 120,
               height: 43,
@@ -188,5 +190,25 @@ class _NewEntryDialogState extends State<NewEntryDialog> {
         _selectedDate = picked;
       });
     }
+  }
+
+  _add() async {
+    if (_categoryDropDownValue != null && _amountController.text != "" && _descriptionController.text != "") {
+      await FirebaseFirestore.instance
+          .collection('expense')
+          .doc(_user!.uid)
+          .collection(_categoryDropDownValue!)
+          .add({
+        'amount': _amountController.text,
+        'description': _descriptionController.text,
+        'date': _selectedDate
+      });
+      Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Fill All the Data"))
+      );
+    }
+
   }
 }
