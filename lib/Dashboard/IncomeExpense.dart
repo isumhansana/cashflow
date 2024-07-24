@@ -2,9 +2,14 @@ import 'package:cashflow/Data/Expenses.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class IncomeExpense extends StatelessWidget {
+class IncomeExpense extends StatefulWidget {
   const IncomeExpense({super.key});
 
+  @override
+  State<IncomeExpense> createState() => _IncomeExpenseState();
+}
+
+class _IncomeExpenseState extends State<IncomeExpense> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,8 +27,7 @@ class IncomeExpense extends StatelessWidget {
               return snapshot.connectionState == ConnectionState.waiting
                   ? const Center(child: CupertinoActivityIndicator())
                   : Column(
-                      children:
-                          ExpenseList().exList.asMap().entries.map((mapEntry) {
+                      children: ExpenseList().exList.asMap().entries.map((mapEntry) {
                         return Column(
                           children: [
                             Row(children: [
