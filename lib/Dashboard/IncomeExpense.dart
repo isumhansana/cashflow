@@ -1,6 +1,7 @@
 import 'package:cashflow/Data/Expenses.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class IncomeExpense extends StatefulWidget {
   const IncomeExpense({super.key});
@@ -35,7 +36,11 @@ class _IncomeExpenseState extends State<IncomeExpense> {
                             Row(children: [
                               Text(mapEntry.value.category),
                               Text(mapEntry.value.description),
-                              Text(mapEntry.value.date.toString()),
+                              Text(
+                                  DateFormat("dd MMM").format(
+                                      mapEntry.value.date.toDate()
+                                  )
+                              ),
                               Text(mapEntry.value.amount.toString())
                             ])
                           ],
