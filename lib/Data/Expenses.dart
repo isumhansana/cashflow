@@ -19,7 +19,7 @@ class ExpenseList {
   var exList = <Expenses>[];
   final _user = FirebaseAuth.instance.currentUser;
 
-  getExpenses() async {
+  Future<List<Expenses>> getExpenses() async {
     QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection("entries").doc(_user!.uid).collection("Expense").get();
     snapshot.docs.map((entry) {
       exList.add(
@@ -31,5 +31,6 @@ class ExpenseList {
         )
       );
     }).toList();
+    return exList;
   }
 }

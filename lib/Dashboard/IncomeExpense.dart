@@ -10,6 +10,8 @@ class IncomeExpense extends StatefulWidget {
 }
 
 class _IncomeExpenseState extends State<IncomeExpense> {
+  var exList = <Expenses>[];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +29,7 @@ class _IncomeExpenseState extends State<IncomeExpense> {
               return snapshot.connectionState == ConnectionState.waiting
                   ? const Center(child: CupertinoActivityIndicator())
                   : Column(
-                      children: ExpenseList().exList.asMap().entries.map((mapEntry) {
+                      children: snapshot.data!.asMap().entries.map((mapEntry) {
                         return Column(
                           children: [
                             Row(children: [
