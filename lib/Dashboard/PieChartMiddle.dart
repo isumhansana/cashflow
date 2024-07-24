@@ -8,43 +8,46 @@ class PieChartMiddle extends StatefulWidget {
 }
 
 class _PieChartMiddleState extends State<PieChartMiddle> {
+  double income = 20000;
+  double expense = 10000;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, '/incomes&expenses'),
-      child: const Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Income: Rs.2 000 000",
-                style: TextStyle(
+                "Income: Rs.$income",
+                style: const TextStyle(
                     fontWeight: FontWeight.bold
                 ),
               ),
             ],
           ),
-          SizedBox(height: 7),
+          const SizedBox(height: 7),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Expense: Rs.1 000 000",
-                style: TextStyle(
+                "Expense: Rs.$expense",
+                style: const TextStyle(
                     fontWeight: FontWeight.bold
                 ),
               ),
             ],
           ),
-          SizedBox(height: 7),
+          const SizedBox(height: 7),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Balance: Rs.1 000 000",
-                style: TextStyle(
+                "Balance: Rs.${income - expense}",
+                style: const TextStyle(
                     fontWeight: FontWeight.bold
                 ),
               ),
