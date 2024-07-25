@@ -17,7 +17,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   int pieTouchedIndex = -1;
   NumberEditingTextController month = NumberEditingTextController.integer();
-  int year = 0;
+  NumberEditingTextController year = NumberEditingTextController.integer();
   int myIndex = 0;
   var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -25,13 +25,14 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     super.initState();
     month.number = DateTime.now().month;
-    year = DateTime.now().year;
+    year.number = DateTime.now().year;
   }
 
   @override
   void dispose() {
     super.dispose();
     month.dispose();
+    year.dispose();
   }
 
   @override
@@ -80,7 +81,7 @@ class _DashboardState extends State<Dashboard> {
                           setState(() {
                             if(month.number == 1){
                               month.number = 12;
-                              year = year - 1;
+                              year.number = year.number! - 1;
                             } else {
                               month.number = month.number! - 1;
                             }
@@ -92,9 +93,9 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       const SizedBox(width: 20),
                       Text(
-                        year==DateTime.now().year
+                        year.number==DateTime.now().year
                             ? monthNames[month.number!.toInt()-1]
-                            : "${monthNames[month.number!.toInt()-1]} $year",
+                            : "${monthNames[month.number!.toInt()-1]} ${year.number}",
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold
@@ -104,11 +105,11 @@ class _DashboardState extends State<Dashboard> {
                       GestureDetector(
                         onTap: (){
                           setState(() {
-                            if (month.number == DateTime.now().month && year == DateTime.now().year){
+                            if (month.number == DateTime.now().month && year.number == DateTime.now().year){
                               (){};
                             } else if(month.number==12){
                               month.number = 1;
-                              year = year + 1;
+                              year.number = year.number! + 1;
                             } else {
                               month.number = month.number! + 1;
                             }
@@ -155,7 +156,7 @@ class _DashboardState extends State<Dashboard> {
                             )
                           ),
                         ),
-                        PieChartMiddle(year, month.number!.toInt())
+                        PieChartMiddle(year.number!.toInt(), month.number!.toInt())
                       ]
                     ),
                   ),
