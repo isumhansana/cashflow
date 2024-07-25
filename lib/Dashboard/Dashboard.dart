@@ -93,7 +93,7 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       const SizedBox(width: 20),
                       Text(
-                        year.number==DateTime.now().year
+                        year.number!.toDouble()==DateTime.now().year.toDouble()
                             ? monthNames[month.number!.toInt()-1]
                             : "${monthNames[month.number!.toInt()-1]} ${year.number}",
                         style: const TextStyle(

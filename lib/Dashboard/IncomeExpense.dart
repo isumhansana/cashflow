@@ -23,6 +23,7 @@ class _IncomeExpenseState extends State<IncomeExpense> {
     year = widget.year;
     month = widget.month;
     print(month);
+    print(year);
   }
 
   @override
