@@ -4,14 +4,26 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class IncomeExpense extends StatefulWidget {
-  const IncomeExpense({super.key});
+  final int year;
+  final int month;
+  const IncomeExpense(this.year, this.month, {super.key});
 
   @override
   State<IncomeExpense> createState() => _IncomeExpenseState();
 }
 
 class _IncomeExpenseState extends State<IncomeExpense> {
+  int year = 0;
+  int month = 0;
   var exList = <Expenses>[];
+
+  @override
+  void initState() {
+    super.initState();
+    year = widget.year;
+    month = widget.month;
+    print(month);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,16 +45,18 @@ class _IncomeExpenseState extends State<IncomeExpense> {
                       children: snapshot.data!.asMap().entries.map((mapEntry) {
                         return Column(
                           children: [
-                            Row(children: [
-                              Text(mapEntry.value.category),
-                              Text(mapEntry.value.description),
-                              Text(
-                                  DateFormat("dd MMM").format(
-                                      mapEntry.value.date.toDate()
-                                  )
-                              ),
-                              Text(mapEntry.value.amount.toString())
-                            ])
+                            DateFormat("yyyy").format(mapEntry.value.date.toDate()) == year.toString() && DateFormat("MM").format(mapEntry.value.date.toDate()) == month.toString()
+                            ? Row(children: [
+                               Text(mapEntry.value.category),
+                               Text(mapEntry.value.description),
+                               Text(
+                                   DateFormat("dd MMM").format(
+                                       mapEntry.value.date.toDate()
+                                   )
+                               ),
+                               Text(mapEntry.value.amount.toString())
+                             ]
+                            ) : const SizedBox()
                           ],
                         );
                       }).toList(),

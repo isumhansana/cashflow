@@ -3,6 +3,7 @@ import 'package:cashflow/Dashboard/NewEntryDialog.dart';
 import 'package:cashflow/NavBar.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:number_editing_controller/number_editing_controller.dart';
 
 import 'PieChartMiddle.dart';
 
@@ -15,10 +16,23 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int pieTouchedIndex = -1;
+  NumberEditingTextController month = NumberEditingTextController.integer();
+  int year = 0;
   int myIndex = 0;
-  int month = DateTime.now().month;
-  int year = DateTime.now().year;
   var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  @override
+  void initState() {
+    super.initState();
+    month.number = DateTime.now().month;
+    year = DateTime.now().year;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    month.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +78,11 @@ class _DashboardState extends State<Dashboard> {
                       GestureDetector(
                         onTap: (){
                           setState(() {
-                            if(month == 1){
-                              month = 12;
+                            if(month.number == 1){
+                              month.number = 12;
                               year = year - 1;
                             } else {
-                              month = month -1;
+                              month.number = month.number! - 1;
                             }
                           });
                         },
@@ -79,8 +93,8 @@ class _DashboardState extends State<Dashboard> {
                       const SizedBox(width: 20),
                       Text(
                         year==DateTime.now().year
-                            ? monthNames[month-1]
-                            : "${monthNames[month-1]} $year",
+                            ? monthNames[month.number!.toInt()-1]
+                            : "${monthNames[month.number!.toInt()-1]} $year",
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold
@@ -90,13 +104,13 @@ class _DashboardState extends State<Dashboard> {
                       GestureDetector(
                         onTap: (){
                           setState(() {
-                            if (month == DateTime.now().month && year == DateTime.now().year){
+                            if (month.number == DateTime.now().month && year == DateTime.now().year){
                               (){};
-                            } else if(month==12){
-                              month = 1;
+                            } else if(month.number==12){
+                              month.number = 1;
                               year = year + 1;
                             } else {
-                              month = month + 1;
+                              month.number = month.number! + 1;
                             }
                           });
                         },
@@ -141,7 +155,7 @@ class _DashboardState extends State<Dashboard> {
                             )
                           ),
                         ),
-                        const PieChartMiddle()
+                        PieChartMiddle(year, month.number!.toInt())
                       ]
                     ),
                   ),

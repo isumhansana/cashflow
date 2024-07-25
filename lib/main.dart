@@ -2,7 +2,6 @@ import 'package:cashflow/Authentication/login.dart';
 import 'package:cashflow/Authentication/registerForm.dart';
 import 'package:cashflow/Budget/Budget.dart';
 import 'package:cashflow/Dashboard/Dashboard.dart';
-import 'package:cashflow/Dashboard/IncomeExpense.dart';
 import 'package:cashflow/Profile/ProfileScreen.dart';
 import 'package:cashflow/Reminder/Reminder.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -48,7 +47,6 @@ class _MyAppState extends State<MyApp> {
         '/budget': (context) => const Budget(),
         '/reminder': (context) => const Reminder(),
         '/profile' : (context) => const ProfileScreen(),
-        '/incomes&expenses': (context) => const IncomeExpense()
       },
     );
   }
