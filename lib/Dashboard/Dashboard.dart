@@ -77,16 +77,7 @@ class _DashboardState extends State<Dashboard> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        onTap: (){
-                          setState(() {
-                            if(month.number == 1){
-                              month.number = 12;
-                              year.number = year.number! - 1;
-                            } else {
-                              month.number = month.number! - 1;
-                            }
-                          });
-                        },
+                        onTap: _monthDecrement,
                         child: const Icon(
                           Icons.chevron_left_rounded
                         ),
@@ -103,18 +94,7 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       const SizedBox(width: 20),
                       GestureDetector(
-                        onTap: (){
-                          setState(() {
-                            if (month.number == DateTime.now().month && year.number == DateTime.now().year){
-                              (){};
-                            } else if(month.number==12){
-                              month.number = 1;
-                              year.number = year.number! + 1;
-                            } else {
-                              month.number = month.number! + 1;
-                            }
-                          });
-                        },
+                        onTap: _monthIncrement,
                         child: const Icon(
                             Icons.chevron_right_rounded
                         ),
@@ -252,5 +232,29 @@ class _DashboardState extends State<Dashboard> {
               ],
             ),
           );
+  }
+
+  _monthDecrement() {
+    setState(() {
+      if(month.number == 1){
+        month.number = 12;
+        year.number = year.number! - 1;
+      } else {
+        month.number = month.number! - 1;
+      }
+    });
+  }
+
+  _monthIncrement() {
+    setState(() {
+      if (month.number == DateTime.now().month && year.number == DateTime.now().year){
+            (){};
+      } else if(month.number==12){
+        month.number = 1;
+        year.number = year.number! + 1;
+      } else {
+        month.number = month.number! + 1;
+      }
+    });
   }
 }
