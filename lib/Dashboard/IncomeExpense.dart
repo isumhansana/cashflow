@@ -22,8 +22,6 @@ class _IncomeExpenseState extends State<IncomeExpense> {
     super.initState();
     year = widget.year;
     month = widget.month;
-    print(month);
-    print(year);
   }
 
   @override
@@ -46,7 +44,7 @@ class _IncomeExpenseState extends State<IncomeExpense> {
                       children: snapshot.data!.asMap().entries.map((mapEntry) {
                         return Column(
                           children: [
-                            DateFormat("yyyy").format(mapEntry.value.date.toDate()) == year.toString() && DateFormat("MM").format(mapEntry.value.date.toDate()) == month.toString()
+                            int.parse(DateFormat("yyyy").format(mapEntry.value.date.toDate())) == year && int.parse(DateFormat("MM").format(mapEntry.value.date.toDate())) == month
                             ? Row(children: [
                                Text(mapEntry.value.category),
                                Text(mapEntry.value.description),
