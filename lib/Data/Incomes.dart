@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class Incomes {
   final double amount;
   final String description;
-  final DateTime date;
+  final Timestamp date;
 
   Incomes({
     required this.amount,

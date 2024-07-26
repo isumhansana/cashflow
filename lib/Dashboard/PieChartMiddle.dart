@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../Data/Expenses.dart';
+import '../Data/Incomes.dart';
 
 class PieChartMiddle extends StatefulWidget {
   final int year;
@@ -16,7 +17,7 @@ class PieChartMiddle extends StatefulWidget {
 class _PieChartMiddleState extends State<PieChartMiddle> {
   int year = 0;
   int month = 0;
-  double income = 20000;
+  double income = 0;
   double expense = 0;
 
   @override
@@ -25,6 +26,7 @@ class _PieChartMiddleState extends State<PieChartMiddle> {
     year = widget.year;
     month = widget.month;
     _getTotalExpense();
+    _getTotalIncome();
   }
 
   @override
@@ -80,6 +82,19 @@ class _PieChartMiddleState extends State<PieChartMiddle> {
         value.asMap().entries.map((mapEntry) {
           if(int.parse(DateFormat("yyyy").format(mapEntry.value.date.toDate())) == year && int.parse(DateFormat("MM").format(mapEntry.value.date.toDate())) == month) {
             expense = expense + mapEntry.value.amount;
+          }
+        }).toList();
+      });
+    });
+  }
+
+  _getTotalIncome() {
+    var inList = IncomeList().getIncomes();
+    setState(() {
+      inList.then((value) {
+        value.asMap().entries.map((mapEntry) {
+          if(int.parse(DateFormat("yyyy").format(mapEntry.value.date.toDate())) == year && int.parse(DateFormat("MM").format(mapEntry.value.date.toDate())) == month) {
+            income = income + mapEntry.value.amount;
           }
         }).toList();
       });
