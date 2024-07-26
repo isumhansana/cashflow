@@ -1,5 +1,8 @@
 import 'package:cashflow/Dashboard/IncomeExpense.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import '../Data/Expenses.dart';
 
 class PieChartMiddle extends StatefulWidget {
   final int year;
@@ -14,13 +17,14 @@ class _PieChartMiddleState extends State<PieChartMiddle> {
   int year = 0;
   int month = 0;
   double income = 20000;
-  double expense = 10000;
+  double expense = 0;
 
   @override
   void initState() {
     super.initState();
     year = widget.year;
     month = widget.month;
+    _getTotalExpense();
   }
 
   @override
@@ -68,5 +72,17 @@ class _PieChartMiddleState extends State<PieChartMiddle> {
         ],
       ),
     );
+  }
+  _getTotalExpense() {
+    var exList = ExpenseList().getExpenses();
+    setState(() {
+      exList.then((value) {
+        value.asMap().entries.map((mapEntry) {
+          if(int.parse(DateFormat("yyyy").format(mapEntry.value.date.toDate())) == year && int.parse(DateFormat("MM").format(mapEntry.value.date.toDate())) == month) {
+            expense = expense + mapEntry.value.amount;
+          }
+        }).toList();
+      });
+    });
   }
 }
