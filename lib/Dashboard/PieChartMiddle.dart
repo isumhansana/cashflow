@@ -30,74 +30,80 @@ class _PieChartMiddleState extends State<PieChartMiddle> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => IncomeExpense(year, month))),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
+      child: FutureBuilder(
+        future: ExpenseList().getExpenses(),
+        builder: (context, snapshot) {
+          return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "Income: Rs.$income",
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Income: Rs.$income",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 7),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Expense: Rs.$expense",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 7),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Balance: Rs.${income - expense}",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ],
               ),
             ],
-          ),
-          const SizedBox(height: 7),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Expense: Rs.$expense",
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 7),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Balance: Rs.${income - expense}",
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold
-                ),
-              ),
-            ],
-          ),
-        ],
+          );
+        }
       ),
     );
   }
-  _getTotalExpense() {
-    var exList = ExpenseList().getExpenses();
+  _getTotalExpense() async {
+    var exList = await ExpenseList().getExpenses();
     setState(() {
-      exList.then((value) {
-        value.asMap().entries.map((mapEntry) {
+        exList.asMap().entries.map((mapEntry) {
           if(int.parse(DateFormat("yyyy").format(mapEntry.value.date.toDate())) == year && int.parse(DateFormat("MM").format(mapEntry.value.date.toDate())) == month) {
             expense = expense + mapEntry.value.amount;
           }
         }).toList();
-      });
     });
   }
 
-  _getTotalIncome() {
-    var inList = IncomeList().getIncomes();
+  _getTotalIncome() async {
+    var inList = await IncomeList().getIncomes();
     setState(() {
-      inList.then((value) {
-        value.asMap().entries.map((mapEntry) {
+        inList.asMap().entries.map((mapEntry) {
           if(int.parse(DateFormat("yyyy").format(mapEntry.value.date.toDate())) == year && int.parse(DateFormat("MM").format(mapEntry.value.date.toDate())) == month) {
             income = income + mapEntry.value.amount;
           }
         }).toList();
-      });
     });
   }
 }
