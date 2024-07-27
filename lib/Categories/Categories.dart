@@ -16,12 +16,12 @@ class Categories {
 
 class FinalCategories {
   final catList = [
-    Categories(title: "Transport", value: 30000, budget: null, color: const Color(0xFF4169E1)),
+    Categories(title: "Transport", value: 30000, budget: null, color: const Color(0xFF0047AB)),
     Categories(title: "Foods", value: 70000, budget: null, color: const Color(0xFFDC143C)),
     Categories(title: "Health", value: 60000, budget: null, color: const Color(0xFF50C878)),
     Categories(title: "Bills", value: 40000, budget: null, color: const Color(0xFF9966CC)),
     Categories(title: "Education", value: 40000, budget: null, color: const Color(0xFF40E0D0)),
-    Categories(title: "Groceries", value: 40000, budget: null, color: const Color(0xFF0047AB)),
+    Categories(title: "Groceries", value: 40000, budget: null, color: const Color(0xFF4169E1)),
     Categories(title: "Clothes", value: 40000, budget: null, color: const Color(0xFF32CD32)),
     Categories(title: "Entertainment", value: 40000, budget: null, color: const Color(0xFFFF00FF)),
     Categories(title: "House", value: 40000, budget: null, color: const Color(0xFF008080)),
