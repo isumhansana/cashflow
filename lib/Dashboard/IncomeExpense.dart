@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../Data/Incomes.dart';
+
 class IncomeExpense extends StatefulWidget {
   final int year;
   final int month;
@@ -36,30 +38,66 @@ class _IncomeExpenseState extends State<IncomeExpense> {
           backgroundColor: const Color(0xFF102C40),
         ),
         body: FutureBuilder(
-            future: ExpenseList().getExpenses(),
-            builder: (context, snapshot) {
-              return snapshot.connectionState == ConnectionState.waiting
-                  ? const Center(child: CupertinoActivityIndicator())
-                  : Column(
-                      children: snapshot.data!.asMap().entries.map((mapEntry) {
-                        return Column(
-                          children: [
-                            int.parse(DateFormat("yyyy").format(mapEntry.value.date.toDate())) == year && int.parse(DateFormat("MM").format(mapEntry.value.date.toDate())) == month
-                            ? Row(children: [
-                               Text(mapEntry.value.category),
-                               Text(mapEntry.value.description),
-                               Text(
-                                   DateFormat("dd MMM").format(
-                                       mapEntry.value.date.toDate()
-                                   )
-                               ),
-                               Text(mapEntry.value.amount.toString())
-                             ]
-                            ) : const SizedBox()
-                          ],
-                        );
-                      }).toList(),
-                    );
-            }));
+          future: ExpenseList().getExpenses(),
+          builder: (context, snapshot) {
+            return snapshot.connectionState == ConnectionState.waiting
+                ? const Center(child: CupertinoActivityIndicator())
+                : Column(
+                    children: [
+                      FutureBuilder(
+                          future: IncomeList().getIncomes(),
+                          builder: (context, snapshot) {
+                            return snapshot.connectionState == ConnectionState.waiting
+                                ? const SizedBox()
+                                : Column(
+                              children: snapshot.data!.asMap().entries.map((mapEntry) {
+                                return Column(
+                                  children: [
+                                    int.parse(DateFormat("yyyy").format(mapEntry.value.date.toDate())) == year && int.parse(DateFormat("MM").format(mapEntry.value.date.toDate())) == month
+                                        ? Row(children: [
+                                      Text(mapEntry.value.description),
+                                      Text(
+                                          DateFormat("dd MMM").format(
+                                              mapEntry.value.date.toDate()
+                                          )
+                                      ),
+                                      Text(mapEntry.value.amount.toString())
+                                    ]
+                                    ) : const SizedBox()
+                                  ],
+                                );
+                              }).toList(),
+                            );
+                          }),
+                      FutureBuilder(
+                          future: ExpenseList().getExpenses(),
+                          builder: (context, snapshot) {
+                            return snapshot.connectionState == ConnectionState.waiting
+                                ? const SizedBox()
+                                : Column(
+                                    children: snapshot.data!.asMap().entries.map((mapEntry) {
+                                      return Column(
+                                        children: [
+                                          int.parse(DateFormat("yyyy").format(mapEntry.value.date.toDate())) == year && int.parse(DateFormat("MM").format(mapEntry.value.date.toDate())) == month
+                                          ? Row(children: [
+                                             Text(mapEntry.value.category),
+                                             Text(mapEntry.value.description),
+                                             Text(
+                                                 DateFormat("dd MMM").format(
+                                                     mapEntry.value.date.toDate()
+                                                 )
+                                             ),
+                                             Text(mapEntry.value.amount.toString())
+                                           ]
+                                          ) : const SizedBox()
+                                        ],
+                                      );
+                                    }).toList(),
+                                  );
+                          }),
+                    ],
+            );
+          }
+        ));
   }
 }
