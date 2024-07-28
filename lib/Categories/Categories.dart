@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class Categories {
   final String title;
   final double value;
-  late final double? budget;
+  double? budget;
   final Color color;
 
   Categories({
@@ -35,10 +35,11 @@ class FinalCategories {
   Future getData() async {
     QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection("entries").doc(_user!.uid).collection("Budget").get();
     snapshot.docs.map((entry) {
-      final index = catList.indexWhere((cat) => cat.title == entry['category']);
-      if(index != -1) {
-        catList[index].budget = entry['amount'];
-      }
-    });
+      catList.map((mapEntry) {
+        if(mapEntry.title == entry['category']) {
+          mapEntry.budget = double.parse(entry['amount']);
+        }
+      }).toList();
+    }).toList();
   }
 }
