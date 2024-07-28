@@ -53,10 +53,7 @@ class _DashboardState extends State<Dashboard> {
       ),
       bottomNavigationBar: NavBar(myIndex),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => showDialog(
-          context: context,
-          builder: (_) => const NewEntryDialog()
-        ),
+        onPressed: _floatingButton,
         backgroundColor: const Color(0xFF235AE8),
         shape: const CircleBorder(),
         child: const Icon(
@@ -271,5 +268,13 @@ class _DashboardState extends State<Dashboard> {
         month.number = month.number! + 1;
       }
     });
+  }
+
+  _floatingButton() async {
+    await showDialog(
+        context: context,
+        builder: (_) => const NewEntryDialog()
+    );
+    setState(() {});
   }
 }
