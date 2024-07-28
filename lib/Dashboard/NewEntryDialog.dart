@@ -227,7 +227,7 @@ class _NewEntryDialogState extends State<NewEntryDialog> {
       _descriptionController.clear();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Fill All the Data"))
+        const SnackBar(content: Text("Fill All the data fields"))
       );
     }
 

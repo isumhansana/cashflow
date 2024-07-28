@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../Categories/Categories.dart';
@@ -11,8 +12,10 @@ class NewBudgetDialog extends StatefulWidget {
 }
 
 class _NewBudgetDialogState extends State<NewBudgetDialog> {
+  final TextEditingController _amountController = TextEditingController();
   String? _dropDownValue;
   final catList = FinalCategories().catList;
+  final _user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +53,7 @@ class _NewBudgetDialogState extends State<NewBudgetDialog> {
             ),
             const SizedBox(height: 10),
             TextFormField(
+              controller: _amountController,
               decoration: InputDecoration(
                 labelText: "Amount",
                 border: OutlineInputBorder(
@@ -59,7 +63,7 @@ class _NewBudgetDialogState extends State<NewBudgetDialog> {
             ),
             const SizedBox(height: 16),
             MaterialButton(
-              onPressed: (){},
+              onPressed: _add,
               color: const Color(0xff235AE8),
               minWidth: 120,
               height: 43,
@@ -88,5 +92,25 @@ class _NewBudgetDialogState extends State<NewBudgetDialog> {
         _dropDownValue = selectedValue;
       });
     }
+  }
+
+  _add() async {
+    if (_dropDownValue != null && _amountController.text != "") {
+      await FirebaseFirestore.instance
+          .collection('entries')
+          .doc(_user!.uid)
+          .collection("Budget")
+          .add({
+        'amount': _amountController.text,
+        'category': _dropDownValue
+      });
+      Navigator.pop(context);
+      _amountController.clear();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Fill All the data fields"))
+      );
+    }
+
   }
 }
