@@ -14,7 +14,6 @@ class Budget extends StatefulWidget {
 
 class _BudgetState extends State<Budget> {
   int myIndex = 1;
-  final catList = FinalCategories().catList;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +61,7 @@ class _BudgetState extends State<Budget> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            children: catList.asMap().entries.map((mapEntry){
+                            children: snapshot.data!.asMap().entries.map((mapEntry){
                               final budget = mapEntry.value.budget;
                               if(budget==null){
                                 return const SizedBox();

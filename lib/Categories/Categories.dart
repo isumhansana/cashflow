@@ -32,7 +32,7 @@ class FinalCategories {
   ];
   final _user = FirebaseAuth.instance.currentUser;
 
-  Future getData() async {
+  Future<List<Categories>> getData() async {
     QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection("entries").doc(_user!.uid).collection("Budget").get();
     snapshot.docs.map((entry) {
       catList.map((mapEntry) {
@@ -41,5 +41,6 @@ class FinalCategories {
         }
       }).toList();
     }).toList();
+    return catList;
   }
 }
