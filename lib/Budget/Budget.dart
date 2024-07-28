@@ -28,10 +28,7 @@ class _BudgetState extends State<Budget> {
       ),
       bottomNavigationBar: NavBar(myIndex),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => showDialog(
-            context: context,
-            builder: (_) => const NewBudgetDialog()
-        ),
+        onPressed: _floatingButton,
         backgroundColor: const Color(0xFF235AE8),
         shape: const CircleBorder(),
         child: const Icon(
@@ -118,5 +115,13 @@ class _BudgetState extends State<Budget> {
         }
       ),
     );
+  }
+
+  _floatingButton() async {
+    await showDialog(
+        context: context,
+        builder: (_) => const NewBudgetDialog()
+    );
+    setState(() {});
   }
 }
