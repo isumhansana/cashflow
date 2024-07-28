@@ -1,6 +1,5 @@
 import 'package:cashflow/Categories/Categories.dart';
 import 'package:cashflow/Dashboard/NewEntryDialog.dart';
-import 'package:cashflow/Data/Expenses.dart';
 import 'package:cashflow/NavBar.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,9 +38,6 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-
-    final catList = FinalCategories().catList;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -62,9 +58,9 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
       body: FutureBuilder(
-        future: ExpenseList().getExpenses(),
-        builder: (context, snapshot) {
-          return snapshot.connectionState == ConnectionState.waiting
+        future: FinalCategories().getData(),
+        builder: (context, dataSnapshot) {
+          return dataSnapshot.connectionState == ConnectionState.waiting
               ? const Center(child: CupertinoActivityIndicator())
               : Column(
               children: [
@@ -112,7 +108,7 @@ class _DashboardState extends State<Dashboard> {
                             children: [
                               PieChart(
                               PieChartData(
-                                sections: catList.asMap().entries.map((mapEntry) {
+                                sections: dataSnapshot.data!.asMap().entries.map((mapEntry) {
                                   final index = mapEntry.key;
                                   final data = mapEntry.value;
                                   return PieChartSectionData(
@@ -167,7 +163,7 @@ class _DashboardState extends State<Dashboard> {
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                children: catList.asMap().entries.map((mapEntry){
+                                children: dataSnapshot.data!.asMap().entries.map((mapEntry){
                                   final budget = mapEntry.value.budget;
                                   final value = mapEntry.value.value;
                                   return Column(
