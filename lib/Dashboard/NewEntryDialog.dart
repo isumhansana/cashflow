@@ -223,6 +223,8 @@ class _NewEntryDialogState extends State<NewEntryDialog> {
         'category': _dropDownValue=="Expense"? _categoryDropDownValue: _dropDownValue
       });
       Navigator.pop(context);
+      _amountController.clear();
+      _descriptionController.clear();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Fill All the Data"))
