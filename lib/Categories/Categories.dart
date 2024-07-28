@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Categories {
   final String title;
   final double value;
-  final double? budget;
+  late final double? budget;
   final Color color;
 
   Categories({
@@ -28,4 +30,15 @@ class FinalCategories {
     Categories(title: "Vehicle", value: 30000, budget: null, color: const Color(0xFF4B0082)),
     Categories(title: "Other", value: 5000, budget: null, color: const Color(0xFFFFD700)),
   ];
+  final _user = FirebaseAuth.instance.currentUser;
+
+  Future getData() async {
+    QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection("entries").doc(_user!.uid).collection("Budget").get();
+    snapshot.docs.map((entry) {
+      final index = catList.indexWhere((cat) => cat.title == entry['category']);
+      if(index != -1) {
+        catList[index].budget = entry['amount'];
+      }
+    });
+  }
 }
