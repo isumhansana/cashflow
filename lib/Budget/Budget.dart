@@ -1,4 +1,6 @@
 import 'package:cashflow/Categories/Categories.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -68,6 +70,7 @@ class _BudgetState extends State<Budget> {
                                   children: [
                                     GestureDetector(
                                       onTap: () => _newBudget(mapEntry.value.title, mapEntry.value.budget!.toInt().toString()),
+                                      onLongPress: () => _delete(mapEntry.value.title),
                                       child: Container(
                                         height: 80,
                                         decoration: BoxDecoration(
@@ -129,6 +132,52 @@ class _BudgetState extends State<Budget> {
     await showDialog(
         context: context,
         builder: (_) => NewBudgetDialog(category, budget)
+    );
+    setState(() {});
+  }
+
+  Future<void> _delete(String title) async {
+    final user = FirebaseAuth.instance.currentUser;
+    QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection("entries").doc(user!.uid).collection("Budget").get();
+    await showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text(
+            "Delete Budget",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: Text(
+              "Are you sure you want to delete $title budget?",
+            style: const TextStyle(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(fontSize: 14),
+                )
+            ),
+            TextButton(
+                onPressed: (){
+                  snapshot.docs.map((entry){
+                    if(title == entry['category']){
+                      FirebaseFirestore.instance.collection("entries").doc(user.uid).collection("Budget").doc(entry.id).delete();
+                    }
+                  }).toList();
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  "Delete",
+                  style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14
+                  ),
+                )
+            )
+          ],
+        )
     );
     setState(() {});
   }
