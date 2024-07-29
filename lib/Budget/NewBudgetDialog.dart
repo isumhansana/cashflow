@@ -63,7 +63,7 @@ class _NewBudgetDialogState extends State<NewBudgetDialog> {
             ),
             const SizedBox(height: 16),
             MaterialButton(
-              onPressed: _add,
+              onPressed: _newBudgetFunction,
               color: const Color(0xff235AE8),
               minWidth: 120,
               height: 43,
@@ -95,7 +95,6 @@ class _NewBudgetDialogState extends State<NewBudgetDialog> {
   }
 
   _add() async {
-    if (_dropDownValue != null && _amountController.text != "") {
       await FirebaseFirestore.instance
           .collection('entries')
           .doc(_user!.uid)
@@ -104,6 +103,32 @@ class _NewBudgetDialogState extends State<NewBudgetDialog> {
         'amount': _amountController.text,
         'category': _dropDownValue
       });
+  }
+
+  _update(QuerySnapshot<Map<String, dynamic>> budgetSnapshot) async {
+    budgetSnapshot.docs.map((entry) {
+      if(_dropDownValue == entry['category']) {
+        FirebaseFirestore.instance.collection("entries").doc(_user!.uid).collection("Budget").doc(entry.id)
+            .update({
+              'amount': _amountController.text
+            });
+      }
+    }).toList();
+  }
+
+  _newBudgetFunction() async {
+    var budgetCatList = <String>[];
+    QuerySnapshot<Map<String, dynamic>> budgetSnapshot = await FirebaseFirestore.instance.collection("entries").doc(_user!.uid).collection("Budget").get();
+    budgetSnapshot.docs.map((entry) {
+      budgetCatList.add(entry['category']);
+    }).toList();
+
+    if (_dropDownValue != null && _amountController.text != "") {
+      if(budgetCatList.contains(_dropDownValue)){
+        _update(budgetSnapshot);
+      } else {
+        _add();
+      }
       Navigator.pop(context);
       _amountController.clear();
     } else {
@@ -111,6 +136,5 @@ class _NewBudgetDialogState extends State<NewBudgetDialog> {
           const SnackBar(content: Text("Fill All the data fields"))
       );
     }
-
   }
 }
