@@ -142,10 +142,7 @@ class _BudgetState extends State<Budget> {
     await showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: const Text(
-            "Delete Budget",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+          title: const Text("Delete Budget"),
           content: Text(
               "Are you sure you want to delete $title budget?",
             style: const TextStyle(fontSize: 16),
