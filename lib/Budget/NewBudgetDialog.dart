@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import '../Categories/Categories.dart';
 
 class NewBudgetDialog extends StatefulWidget {
-  const NewBudgetDialog({super.key});
+  final String? category;
+  final String budget;
+  const NewBudgetDialog(this.category, this.budget, {super.key});
 
   @override
   State<NewBudgetDialog> createState() => _NewBudgetDialogState();
@@ -16,6 +18,17 @@ class _NewBudgetDialogState extends State<NewBudgetDialog> {
   String? _dropDownValue;
   final catList = FinalCategories().catList;
   final _user = FirebaseAuth.instance.currentUser;
+
+  @override void initState() {
+    _amountController.text = widget.budget;
+    _dropDownValue = widget.category;
+    super.initState();
+  }
+
+  @override void dispose() {
+    _amountController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
