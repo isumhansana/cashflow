@@ -37,7 +37,7 @@ class _BudgetState extends State<Budget> {
         ),
       ),
       body: FutureBuilder(
-        future: FinalCategories().getData(),
+        future: FinalCategories().getData(0, 0),
         builder: (context, snapshot) {
           return snapshot.connectionState == ConnectionState.waiting
               ? const Center(child: CupertinoActivityIndicator())

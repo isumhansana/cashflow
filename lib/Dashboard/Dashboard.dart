@@ -58,7 +58,7 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
       body: FutureBuilder(
-        future: FinalCategories().getData(),
+        future: FinalCategories().getData(year.number!.toInt(), month.number!.toInt()),
         builder: (context, dataSnapshot) {
           return dataSnapshot.connectionState == ConnectionState.waiting
               ? const Center(child: CupertinoActivityIndicator())

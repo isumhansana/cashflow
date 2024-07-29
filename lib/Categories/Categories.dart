@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Categories {
   final String title;
@@ -32,7 +33,7 @@ class FinalCategories {
   ];
   final _user = FirebaseAuth.instance.currentUser;
 
-  Future<List<Categories>> getData() async {
+  Future<List<Categories>> getData(int year, int month) async {
     QuerySnapshot<Map<String, dynamic>> budgetSnapshot = await FirebaseFirestore.instance.collection("entries").doc(_user!.uid).collection("Budget").get();
     budgetSnapshot.docs.map((entry) {
       catList.map((mapEntry) {
@@ -44,11 +45,13 @@ class FinalCategories {
 
     QuerySnapshot<Map<String, dynamic>> expenseSnapshot = await FirebaseFirestore.instance.collection("entries").doc(_user.uid).collection("Expense").get();
     expenseSnapshot.docs.map((entry) {
-      catList.map((mapEntry) {
-        if(mapEntry.title == entry['category']) {
-          mapEntry.value = mapEntry.value + double.parse(entry['amount']);
-        }
-      }).toList();
+      if(int.parse(DateFormat("yyyy").format(entry['date'].toDate())) == year && int.parse(DateFormat("MM").format(entry['date'].toDate())) == month) {
+        catList.map((mapEntry) {
+          if(mapEntry.title == entry['category']) {
+            mapEntry.value = mapEntry.value + double.parse(entry['amount']);
+          }
+        }).toList();
+      }
     }).toList();
     return catList;
   }
