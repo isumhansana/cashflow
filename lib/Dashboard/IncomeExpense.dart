@@ -1,4 +1,6 @@
 import 'package:cashflow/Data/Expenses.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -78,21 +80,24 @@ class _IncomeExpenseState extends State<IncomeExpense> {
                                           return Column(
                                             children: [
                                               int.parse(DateFormat("yyyy").format(mapEntry.value.date.toDate())) == year && int.parse(DateFormat("MM").format(mapEntry.value.date.toDate())) == month
-                                                  ? Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      children: [
-                                                          Text(
-                                                            "Rs. ${mapEntry.value.amount.toInt()}   ${mapEntry.value.description}",
-                                                            style: const TextStyle(fontSize: 16),
-                                                          ),
-                                                          Text(
-                                                            DateFormat("dd MMM").format(
-                                                                mapEntry.value.date.toDate()
+                                                  ? GestureDetector(
+                                                    onLongPress: () => _delete(mapEntry.value.description, mapEntry.value.amount, "Income", mapEntry.value.date),
+                                                    child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        children: [
+                                                            Text(
+                                                              "Rs. ${mapEntry.value.amount.toInt()}   ${mapEntry.value.description}",
+                                                              style: const TextStyle(fontSize: 16),
                                                             ),
-                                                            style: const TextStyle(fontSize: 16),
-                                                          ),
-                                                        ]
-                                                    ) : const SizedBox()
+                                                            Text(
+                                                              DateFormat("dd MMM").format(
+                                                                  mapEntry.value.date.toDate()
+                                                              ),
+                                                              style: const TextStyle(fontSize: 16),
+                                                            ),
+                                                          ]
+                                                      ),
+                                                  ) : const SizedBox()
                                                   ],
                                           );
                                         }).toList(),
@@ -132,21 +137,24 @@ class _IncomeExpenseState extends State<IncomeExpense> {
                                                         return Column(
                                                           children: [
                                                             int.parse(DateFormat("yyyy").format(mapEntry.value.date.toDate())) == year && int.parse(DateFormat("MM").format(mapEntry.value.date.toDate())) == month && dataMapEntry.value.title == mapEntry.value.category
-                                                                ? Row(
-                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                children: [
-                                                                  Text(
-                                                                    "Rs. ${mapEntry.value.amount.toInt()}   ${mapEntry.value.description}",
-                                                                    style: const TextStyle(fontSize: 16),
-                                                                  ),
-                                                                  Text(
-                                                                    DateFormat("dd MMM").format(
-                                                                        mapEntry.value.date.toDate()
+                                                                ? GestureDetector(
+                                                                  onLongPress: () => _delete(mapEntry.value.description, mapEntry.value.amount, mapEntry.value.category, mapEntry.value.date),
+                                                                  child: Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                      "Rs. ${mapEntry.value.amount.toInt()}   ${mapEntry.value.description}",
+                                                                      style: const TextStyle(fontSize: 16),
                                                                     ),
-                                                                    style: const TextStyle(fontSize: 16),
-                                                                  ),
-                                                                ]
-                                                            ) : const SizedBox()
+                                                                    Text(
+                                                                      DateFormat("dd MMM").format(
+                                                                          mapEntry.value.date.toDate()
+                                                                      ),
+                                                                      style: const TextStyle(fontSize: 16),
+                                                                    ),
+                                                                  ]
+                                                                                                                              ),
+                                                                ) : const SizedBox()
                                                           ],
                                                         );
                                                       }).toList(),
@@ -163,5 +171,56 @@ class _IncomeExpenseState extends State<IncomeExpense> {
                 );
           }
         ));
+  }
+
+  Future<void> _delete(String description, double amount, String category, Timestamp date) async {
+    final user = FirebaseAuth.instance.currentUser;
+    QuerySnapshot<Map<String, dynamic>> expenseSnapshot = await FirebaseFirestore.instance.collection("entries").doc(user!.uid).collection("Expense").get();
+    QuerySnapshot<Map<String, dynamic>> incomeSnapshot = await FirebaseFirestore.instance.collection("entries").doc(user.uid).collection("Income").get();
+    await showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text("Delete Entry"),
+          content: Text(
+            "Are you sure you want to delete Rs. ${amount.toInt()} $description?",
+            style: const TextStyle(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(fontSize: 14),
+                )
+            ),
+            TextButton(
+                onPressed: (){
+                  if(category == 'Income') {
+                    incomeSnapshot.docs.map((entry){
+                      if(description == entry['description'] && amount.toInt().toString() == entry['amount'] && date == entry['date']){
+                        FirebaseFirestore.instance.collection("entries").doc(user.uid).collection("Income").doc(entry.id).delete();
+                      }
+                    }).toList();
+                  } else {
+                    expenseSnapshot.docs.map((entry){
+                      if(description == entry['description'] && amount.toInt().toString() == entry['amount'] && date == entry['date'] && category == entry['category']){
+                        FirebaseFirestore.instance.collection("entries").doc(user.uid).collection("Expense").doc(entry.id).delete();
+                      }
+                    }).toList();
+                  }
+                  Navigator.pushNamed(context, '/dashboard');
+                },
+                child: const Text(
+                  "Delete",
+                  style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14
+                  ),
+                )
+            )
+          ],
+        )
+    );
   }
 }
