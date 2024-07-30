@@ -41,13 +41,13 @@ class _IncomeExpenseState extends State<IncomeExpense> {
           centerTitle: true,
           backgroundColor: const Color(0xFF102C40),
         ),
-        body: SingleChildScrollView(
-          child: FutureBuilder(
-            future: ExpenseList().getExpenses(),
-            builder: (context, snapshot) {
-              return snapshot.connectionState == ConnectionState.waiting
-                  ? const Center(child: CupertinoActivityIndicator())
-                  : Padding(
+        body: FutureBuilder(
+          future: FinalCategories().getData(year.toInt(), month.toInt()),
+          builder: (context, dataSnapshot) {
+            return dataSnapshot.connectionState == ConnectionState.waiting
+                ? const Center(child: CupertinoActivityIndicator())
+                : SingleChildScrollView(
+                  child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8),
                     child: Column(
                         children: [
@@ -67,7 +67,7 @@ class _IncomeExpenseState extends State<IncomeExpense> {
                             ),
                             children: [
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
                                 child: FutureBuilder(
                                     future: IncomeList().getIncomes(),
                                     builder: (context, snapshot) {
@@ -107,31 +107,61 @@ class _IncomeExpenseState extends State<IncomeExpense> {
                                 return snapshot.connectionState == ConnectionState.waiting
                                     ? const SizedBox()
                                     : Column(
-                                        children: snapshot.data!.asMap().entries.map((mapEntry) {
-                                          return Column(
-                                            children: [
-                                              int.parse(DateFormat("yyyy").format(mapEntry.value.date.toDate())) == year && int.parse(DateFormat("MM").format(mapEntry.value.date.toDate())) == month
-                                              ? Row(children: [
-                                                 Text(mapEntry.value.category),
-                                                 Text(mapEntry.value.description),
-                                                 Text(
-                                                     DateFormat("dd MMM").format(
-                                                         mapEntry.value.date.toDate()
-                                                     )
-                                                 ),
-                                                 Text(mapEntry.value.amount.toString())
-                                               ]
-                                              ) : const SizedBox()
-                                            ],
-                                          );
-                                        }).toList(),
-                                      );
+                                      children: dataSnapshot.data!.asMap().entries.map((dataMapEntry){
+                                        return dataMapEntry.value.value==0
+                                            ? const SizedBox()
+                                            : ExpansionTile(
+                                                title: Text(
+                                                  dataMapEntry.value.title,
+                                                  style: const TextStyle(fontSize: 20),
+                                                ),
+                                                shape: const Border(),
+                                                trailing: Text(
+                                                  "Rs. ${dataMapEntry.value.value.toInt()}",
+                                                  style: const TextStyle(
+                                                      fontSize: 20,
+                                                      color: Color(0xFFFF3F3F),
+                                                      fontWeight: FontWeight.normal
+                                                  ),
+                                                ),
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                                    child: Column(
+                                                      children: snapshot.data!.asMap().entries.map((mapEntry) {
+                                                        return Column(
+                                                          children: [
+                                                            int.parse(DateFormat("yyyy").format(mapEntry.value.date.toDate())) == year && int.parse(DateFormat("MM").format(mapEntry.value.date.toDate())) == month && dataMapEntry.value.title == mapEntry.value.category
+                                                                ? Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                children: [
+                                                                  Text(
+                                                                    "Rs. ${mapEntry.value.amount.toInt()}   ${mapEntry.value.description}",
+                                                                    style: const TextStyle(fontSize: 16),
+                                                                  ),
+                                                                  Text(
+                                                                    DateFormat("dd MMM").format(
+                                                                        mapEntry.value.date.toDate()
+                                                                    ),
+                                                                    style: const TextStyle(fontSize: 16),
+                                                                  ),
+                                                                ]
+                                                            ) : const SizedBox()
+                                                          ],
+                                                        );
+                                                      }).toList(),
+                                                    ),
+                                                  ),
+                                                ],
+                                        );
+                                      }).toList(),
+                                    );
                               }),
                         ],
                                 ),
-                  );
-            }
-          ),
+                  ),
+                );
+          }
         ));
   }
 }
