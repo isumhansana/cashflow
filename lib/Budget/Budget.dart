@@ -69,7 +69,7 @@ class _BudgetState extends State<Budget> {
                                 return Column(
                                   children: [
                                     GestureDetector(
-                                      onTap: () => _newBudget(mapEntry.value.title, mapEntry.value.budget!.toInt().toString()),
+                                      onTap: () => _newBudget(mapEntry.value.title, budget.toInt().toString()),
                                       onLongPress: () => _delete(mapEntry.value.title),
                                       child: Container(
                                         height: 80,
@@ -97,7 +97,7 @@ class _BudgetState extends State<Budget> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    "Rs. $budget",
+                                                    "Rs. ${budget.toInt()}",
                                                     style: const TextStyle(
                                                         fontSize: 20
                                                     ),

@@ -48,7 +48,7 @@ class _PieChartMiddleState extends State<PieChartMiddle> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Income: Rs.$income",
+                    "Income: Rs.${income.toInt()}",
                     style: const TextStyle(
                         fontWeight: FontWeight.bold
                     ),
@@ -60,7 +60,7 @@ class _PieChartMiddleState extends State<PieChartMiddle> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Expense: Rs.$expense",
+                    "Expense: Rs.${expense.toInt()}",
                     style: const TextStyle(
                         fontWeight: FontWeight.bold
                     ),
@@ -72,7 +72,7 @@ class _PieChartMiddleState extends State<PieChartMiddle> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Balance: Rs.${income - expense}",
+                    "Balance: Rs.${(income - expense).toInt()}",
                     style: const TextStyle(
                         fontWeight: FontWeight.bold
                     ),

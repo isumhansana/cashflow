@@ -197,7 +197,7 @@ class _DashboardState extends State<Dashboard> {
                                                               ),
                                                             ),
                                                             Text(
-                                                              "Rs. $value",
+                                                              "Rs. ${value.toInt()}",
                                                               style: const TextStyle(
                                                                 fontSize: 20
                                                               ),
@@ -211,7 +211,7 @@ class _DashboardState extends State<Dashboard> {
                                                         budget==null
                                                             ? const Text("No budget")
                                                             : Text(
-                                                          "Remaining Budget: Rs. ${budget-value}",
+                                                          "Remaining Budget: Rs. ${(budget-value).toInt()}",
                                                           style: TextStyle(
                                                               color: Color(budget>value? 0xFF03AB00: (budget<value? 0xFFF60707: 0xFF000000)),
                                                               fontSize: 15
