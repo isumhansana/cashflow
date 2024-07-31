@@ -11,7 +11,8 @@ import '../Data/Incomes.dart';
 class IncomeExpense extends StatefulWidget {
   final int year;
   final int month;
-  const IncomeExpense(this.year, this.month, {super.key});
+  final String? title;
+  const IncomeExpense(this.year, this.month, this.title, {super.key});
 
   @override
   State<IncomeExpense> createState() => _IncomeExpenseState();
@@ -21,6 +22,7 @@ class _IncomeExpenseState extends State<IncomeExpense> {
   int year = 0;
   int month = 0;
   double income = 0;
+  String? title;
   var exList = <Expenses>[];
 
   @override
@@ -28,6 +30,7 @@ class _IncomeExpenseState extends State<IncomeExpense> {
     super.initState();
     year = widget.year;
     month = widget.month;
+    title = widget.title;
     _getTotalIncome();
   }
 
@@ -128,6 +131,7 @@ class _IncomeExpenseState extends State<IncomeExpense> {
                                                       fontWeight: FontWeight.normal
                                                   ),
                                                 ),
+                                                initiallyExpanded: dataMapEntry.value.title == title ? true : false,
                                                 children: [
                                                   Padding(
                                                     padding: const EdgeInsets.symmetric(horizontal: 20.0),

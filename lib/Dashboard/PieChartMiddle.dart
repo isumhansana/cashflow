@@ -37,7 +37,7 @@ class _PieChartMiddleState extends State<PieChartMiddle> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => IncomeExpense(year, month))),
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => IncomeExpense(year, month, null))),
       child: FutureBuilder(
         future: ExpenseList().getExpenses(),
         builder: (context, snapshot) {
