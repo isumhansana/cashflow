@@ -208,7 +208,7 @@ class _IncomeExpenseState extends State<IncomeExpense> {
                       }
                     }).toList();
                   }
-                  Navigator.pushNamed(context, '/dashboard');
+                  Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => false);
                 },
                 child: const Text(
                   "Delete",
