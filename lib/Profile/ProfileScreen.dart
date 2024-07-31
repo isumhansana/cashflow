@@ -89,6 +89,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             MaterialButton(
+                              onPressed: _clearData,
+                              color: const Color(0xff235AE8),
+                              minWidth: 250,
+                              height: 50,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  side: const BorderSide(color: Colors.black)),
+                              child: const Text(
+                                'Clear Data',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 25),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            MaterialButton(
                               onPressed: _resetPassword,
                               color: const Color(0xff235AE8),
                               minWidth: 250,
@@ -134,6 +156,61 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }),
     );
   }
+
+
+  _clearData() async {
+    final instance = FirebaseFirestore.instance;
+    var budgetSnapshot = await instance.collection('entries').doc(_user!.uid).collection('Budget').get();
+    var expenseSnapshot = await instance.collection('entries').doc(_user.uid).collection('Expense').get();
+    var incomeSnapshot = await instance.collection('entries').doc(_user.uid).collection('Income').get();
+    await showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text("Permanently Clear Data"),
+          content: const Text(
+            "Are you sure you want to Permanently Clear All Data?",
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(fontSize: 14),
+                )
+            ),
+            TextButton(
+                onPressed: () async {
+                  final budgetBatch = instance.batch();
+                  final expenseBatch = instance.batch();
+                  final incomeBatch = instance.batch();
+                  for (var doc in budgetSnapshot.docs) {
+                    budgetBatch.delete(doc.reference);
+                  }
+                  for (var doc in incomeSnapshot.docs) {
+                    incomeBatch.delete(doc.reference);
+                  }
+                  for (var doc in expenseSnapshot.docs) {
+                    expenseBatch.delete(doc.reference);
+                  }
+                  await budgetBatch.commit();
+                  await incomeBatch.commit();
+                  await expenseBatch.commit();
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  "Continue",
+                  style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14
+                  ),
+                )
+            )
+          ],
+        )
+      );
+    }
 
   _logout() async {
     _auth.signOut();
