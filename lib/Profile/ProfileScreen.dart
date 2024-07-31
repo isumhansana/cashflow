@@ -89,7 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             MaterialButton(
-                              onPressed: _clearData,
+                              onPressed: _resetPassword,
                               color: const Color(0xff235AE8),
                               minWidth: 250,
                               height: 50,
@@ -97,7 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   borderRadius: BorderRadius.circular(15),
                                   side: const BorderSide(color: Colors.black)),
                               child: const Text(
-                                'Clear Data',
+                                'Reset Password',
                                 style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.white,
@@ -111,15 +111,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             MaterialButton(
-                              onPressed: _resetPassword,
-                              color: const Color(0xff235AE8),
+                              onPressed: _clearData,
+                              color: const Color(0xFFB43131),
                               minWidth: 250,
                               height: 50,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15),
                                   side: const BorderSide(color: Colors.black)),
                               child: const Text(
-                                'Reset Password',
+                                'Clear Data',
                                 style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.white,
@@ -163,6 +163,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var budgetSnapshot = await instance.collection('entries').doc(_user!.uid).collection('Budget').get();
     var expenseSnapshot = await instance.collection('entries').doc(_user.uid).collection('Expense').get();
     var incomeSnapshot = await instance.collection('entries').doc(_user.uid).collection('Income').get();
+    var reminderSnapshot = await instance.collection('entries').doc(_user.uid).collection('Reminder').get();
     await showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -184,6 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   final budgetBatch = instance.batch();
                   final expenseBatch = instance.batch();
                   final incomeBatch = instance.batch();
+                  final reminderBatch = instance.batch();
                   for (var doc in budgetSnapshot.docs) {
                     budgetBatch.delete(doc.reference);
                   }
@@ -193,9 +195,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   for (var doc in expenseSnapshot.docs) {
                     expenseBatch.delete(doc.reference);
                   }
+                  for (var doc in reminderSnapshot.docs) {
+                    reminderBatch.delete(doc.reference);
+                  }
                   await budgetBatch.commit();
                   await incomeBatch.commit();
                   await expenseBatch.commit();
+                  await reminderBatch.commit();
                   Navigator.pop(context);
                 },
                 child: const Text(
