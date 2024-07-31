@@ -11,8 +11,7 @@ import '../Data/Incomes.dart';
 class IncomeExpense extends StatefulWidget {
   final int year;
   final int month;
-  final double income;
-  const IncomeExpense(this.year, this.month, this.income, {super.key});
+  const IncomeExpense(this.year, this.month, {super.key});
 
   @override
   State<IncomeExpense> createState() => _IncomeExpenseState();
@@ -29,7 +28,7 @@ class _IncomeExpenseState extends State<IncomeExpense> {
     super.initState();
     year = widget.year;
     month = widget.month;
-    income = widget.income;
+    _getTotalIncome();
   }
 
   @override
@@ -208,7 +207,10 @@ class _IncomeExpenseState extends State<IncomeExpense> {
                       }
                     }).toList();
                   }
-                  Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => false);
+                  Navigator.pop(context);
+                  setState(() {
+                    _getTotalIncome();
+                  });
                 },
                 child: const Text(
                   "Delete",
@@ -222,5 +224,16 @@ class _IncomeExpenseState extends State<IncomeExpense> {
           ],
         )
     );
+  }
+  _getTotalIncome() async {
+    income = 0;
+    var inList = await IncomeList().getIncomes();
+    setState(() {
+      inList.asMap().entries.map((mapEntry) {
+        if(int.parse(DateFormat("yyyy").format(mapEntry.value.date.toDate())) == year && int.parse(DateFormat("MM").format(mapEntry.value.date.toDate())) == month) {
+          income = income + mapEntry.value.amount;
+        }
+      }).toList();
+    });
   }
 }
