@@ -1,10 +1,7 @@
 import 'package:cashflow/Authentication/InputValidation.dart';
-import 'package:cashflow/Categories/Categories.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class NewReminderDialog extends StatefulWidget {
   const NewReminderDialog({super.key});
@@ -98,7 +95,7 @@ class _NewReminderDialogState extends State<NewReminderDialog> {
             ),
             const SizedBox(height: 16),
             MaterialButton(
-              onPressed: (){},
+              onPressed: _add,
               color: const Color(0xff235AE8),
               minWidth: 120,
               height: 43,
@@ -129,26 +126,25 @@ class _NewReminderDialogState extends State<NewReminderDialog> {
     }
   }
 
-  /*_add() async {
-    if ((_categoryDropDownValue != null || _dropDownValue == 'Income') && _amountController.text != "" && _descriptionController.text != "") {
+  _add() async {
+    if (_amountController.text != "" && _titleController.text != "") {
       await FirebaseFirestore.instance
           .collection('entries')
           .doc(_user!.uid)
-          .collection(_dropDownValue!)
+          .collection('Reminder')
           .add({
+        'title': _titleController.text,
         'amount': _amountController.text,
-        'description': _descriptionController.text,
-        'date': _selectedDate,
-        'category': _dropDownValue=="Expense"? _categoryDropDownValue: _dropDownValue
+        'repeat': _dropDownValue
       });
       Navigator.pop(context);
       _amountController.clear();
-      _descriptionController.clear();
+      _titleController.clear();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Fill All the data fields"))
       );
     }
-  }*/
+  }
 
 }
