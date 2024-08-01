@@ -1,3 +1,4 @@
+import 'package:cashflow/Reminder/NewReminderDialog.dart';
 import 'package:flutter/material.dart';
 
 import '../NavBar.dart';
@@ -25,7 +26,7 @@ class _ReminderState extends State<Reminder> {
       ),
       bottomNavigationBar: NavBar(myIndex),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: _floatingButton,
         backgroundColor: const Color(0xFF235AE8),
         shape: const CircleBorder(),
         child: const Icon(
@@ -35,4 +36,13 @@ class _ReminderState extends State<Reminder> {
       ),
     );
   }
+
+  _floatingButton() async {
+    await showDialog(
+        context: context,
+        builder: (_) => const NewReminderDialog()
+    );
+    setState(() {});
+  }
+
 }
