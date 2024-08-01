@@ -1,4 +1,6 @@
+import 'package:cashflow/Data/Reminders.dart';
 import 'package:cashflow/Reminder/NewReminderDialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../NavBar.dart';
@@ -33,6 +35,93 @@ class _ReminderState extends State<Reminder> {
           Icons.add,
           color: Colors.white,
         ),
+      ),
+      body: FutureBuilder(
+          future: ReminderList().getReminders(),
+          builder: (context, snapshot) {
+            return snapshot.connectionState == ConnectionState.waiting
+                ? const Center(child: CupertinoActivityIndicator())
+                : Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Edit Your Reminders",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: snapshot.data!.asMap().entries.map((mapEntry){
+                                return Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () => {},
+                                      onLongPress: () => {},
+                                      child: Container(
+                                        height: 80,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.black
+                                          ),
+                                          borderRadius: const BorderRadius.all(
+                                             Radius.circular(10)
+                                          )
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    mapEntry.value.title,
+                                                    style: const TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 20
+                                                    ),
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "Rs. ${mapEntry.value.amount.toInt()}",
+                                                        style: const TextStyle(
+                                                          fontSize: 20
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "/${mapEntry.value.repeat}" == "Monthly" ? "mo" : "yr",
+                                                        style: const TextStyle(
+                                                          fontSize: 20
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
+                                                ],
+                                               ),
+                                             ],
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                              ],
+                            );
+                        }).toList(),
+                      ),
+                    ]
+                ),
+              ),
+            );
+          }
       ),
     );
   }
