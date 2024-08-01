@@ -61,15 +61,36 @@ class _LoginState extends State<Login> {
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 15),
-              TextFormField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                    labelText: "Password",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10)
-                    )
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                        labelText: "Password",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)
+                        )
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/forgotPassword');
+                      },
+                      child: const Text(
+                        "Forgot Password?",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 25),
               MaterialButton(

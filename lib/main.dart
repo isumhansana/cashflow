@@ -9,6 +9,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'Authentication/ForgotPassword.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -47,6 +49,7 @@ class _MyAppState extends State<MyApp> {
         '/budget': (context) => const Budget(),
         '/reminder': (context) => const Reminder(),
         '/profile' : (context) => const ProfileScreen(),
+        '/forgotPassword': (context) => const ForgotPassword(),
       },
     );
   }

@@ -188,7 +188,7 @@ class _RegisterState extends State<Register> {
     if (user != null) {
       await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
         'name': _usernameController.text.trim(),
-        'email': user.email
+        'email': user.email!.trim()
       });
       Navigator.pushReplacementNamed(context, '/login');
       ScaffoldMessenger.of(context).showSnackBar(
