@@ -1,5 +1,7 @@
 import 'package:cashflow/Data/Reminders.dart';
 import 'package:cashflow/Reminder/NewReminderDialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -62,8 +64,7 @@ class _ReminderState extends State<Reminder> {
                                 return Column(
                                   children: [
                                     GestureDetector(
-                                      onTap: () => {},
-                                      onLongPress: () => {},
+                                      onLongPress: () => _delete(mapEntry.value.title, mapEntry.value.amount, mapEntry.value.repeat),
                                       child: Container(
                                         height: 80,
                                         decoration: BoxDecoration(
@@ -130,6 +131,50 @@ class _ReminderState extends State<Reminder> {
     await showDialog(
         context: context,
         builder: (_) => const NewReminderDialog()
+    );
+    setState(() {});
+  }
+
+  Future<void> _delete(String title, double amount, String repeat) async {
+    final user = FirebaseAuth.instance.currentUser;
+    QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection("entries").doc(user!.uid).collection("Reminder").get();
+    await showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text("Delete Reminder"),
+          content: Text(
+            "Are you sure you want to delete $title Reminder?",
+            style: const TextStyle(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(fontSize: 14),
+                )
+            ),
+            TextButton(
+                onPressed: (){
+                  for(var entry in snapshot.docs){
+                    if(title == entry['title'] && amount == double.parse(entry['amount']) && repeat == entry['repeat']){
+                      FirebaseFirestore.instance.collection("entries").doc(user.uid).collection("Reminder").doc(entry.id).delete();
+                      break;
+                    }
+                  }
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  "Delete",
+                  style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14
+                  ),
+                )
+            )
+          ],
+        )
     );
     setState(() {});
   }
