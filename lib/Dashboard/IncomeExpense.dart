@@ -210,17 +210,19 @@ class _IncomeExpenseState extends State<IncomeExpense> {
             TextButton(
                 onPressed: (){
                   if(category == 'Income') {
-                    incomeSnapshot.docs.map((entry){
+                    for(var entry in incomeSnapshot.docs) {
                       if(description == entry['description'] && amount.toInt().toString() == entry['amount'] && date == entry['date']){
                         FirebaseFirestore.instance.collection("entries").doc(user.uid).collection("Income").doc(entry.id).delete();
+                        break;
                       }
-                    }).toList();
+                    }
                   } else {
-                    expenseSnapshot.docs.map((entry){
+                    for(var entry in expenseSnapshot.docs) {
                       if(description == entry['description'] && amount.toInt().toString() == entry['amount'] && date == entry['date'] && category == entry['category']){
                         FirebaseFirestore.instance.collection("entries").doc(user.uid).collection("Expense").doc(entry.id).delete();
+                        break;
                       }
-                    }).toList();
+                    }
                   }
                   Navigator.pop(context);
                   setState(() {
