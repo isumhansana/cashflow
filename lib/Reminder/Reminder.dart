@@ -99,9 +99,9 @@ class _ReminderState extends State<Reminder> {
                                                         ),
                                                       ),
                                                       Text(
-                                                        "/${mapEntry.value.repeat}" == "Monthly" ? "mo" : "yr",
+                                                        "  /${mapEntry.value.repeat == "Monthly" ? "mo" : "yr"}",
                                                         style: const TextStyle(
-                                                          fontSize: 20
+                                                          fontSize: 14
                                                         ),
                                                       ),
                                                     ],
