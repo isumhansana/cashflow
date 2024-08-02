@@ -211,7 +211,7 @@ class _NewEntryDialogState extends State<NewEntryDialog> {
   }
 
   _add() async {
-    if ((_categoryDropDownValue != null || _dropDownValue == 'Income') && _amountController.text != "" && _descriptionController.text != "") {
+    if ((_categoryDropDownValue != null || _dropDownValue == 'Income') && _amountController.text != "" && _descriptionController.text != "" && double.tryParse(_amountController.text) != null) {
       await FirebaseFirestore.instance
           .collection('entries')
           .doc(_user!.uid)
@@ -225,6 +225,10 @@ class _NewEntryDialogState extends State<NewEntryDialog> {
       Navigator.pop(context);
       _amountController.clear();
       _descriptionController.clear();
+    } else if((_categoryDropDownValue != null || _dropDownValue == 'Income') && _amountController.text != "" && _descriptionController.text != "" && double.tryParse(_amountController.text) == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Amount Should be a Number"))
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Fill All the data fields"))

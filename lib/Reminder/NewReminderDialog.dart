@@ -127,7 +127,7 @@ class _NewReminderDialogState extends State<NewReminderDialog> {
   }
 
   _add() async {
-    if (_amountController.text != "" && _titleController.text != "") {
+    if (_amountController.text != "" && _titleController.text != "" && double.tryParse(_amountController.text) != null) {
       await FirebaseFirestore.instance
           .collection('entries')
           .doc(_user!.uid)
@@ -140,6 +140,10 @@ class _NewReminderDialogState extends State<NewReminderDialog> {
       Navigator.pop(context);
       _amountController.clear();
       _titleController.clear();
+    } else if(_amountController.text != "" && _titleController.text != "" && double.tryParse(_amountController.text) == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Amount Should be a Number"))
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Fill All the data fields"))

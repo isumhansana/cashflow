@@ -83,6 +83,7 @@ class _NewBudgetDialogState extends State<NewBudgetDialog> {
                 ),
                 errorText: _amountError
               ),
+              keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 16),
             MaterialButton(
@@ -146,7 +147,7 @@ class _NewBudgetDialogState extends State<NewBudgetDialog> {
       budgetCatList.add(entry['category']);
     }).toList();
 
-    if (_dropDownValue != null && _amountController.text != "") {
+    if (_dropDownValue != null && _amountController.text != "" && double.tryParse(_amountController.text) != null) {
       if(budgetCatList.contains(_dropDownValue)){
         _update(budgetSnapshot);
       } else {
@@ -154,6 +155,10 @@ class _NewBudgetDialogState extends State<NewBudgetDialog> {
       }
       Navigator.pop(context);
       _amountController.clear();
+    } else if(_dropDownValue != null && _amountController.text != "" && double.tryParse(_amountController.text) == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Amount Should be a Number"))
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Fill All the data fields"))
