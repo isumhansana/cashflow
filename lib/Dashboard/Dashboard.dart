@@ -148,7 +148,7 @@ class _DashboardState extends State<Dashboard> {
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: SizedBox(
-                    height: 348,
+                    height: (MediaQuery.of(context).size.height)/2.475,
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
