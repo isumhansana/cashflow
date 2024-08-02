@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../Authentication/InputValidation.dart';
 import '../Categories/Categories.dart';
 
 class NewBudgetDialog extends StatefulWidget {
@@ -16,18 +17,26 @@ class NewBudgetDialog extends StatefulWidget {
 class _NewBudgetDialogState extends State<NewBudgetDialog> {
   final TextEditingController _amountController = TextEditingController();
   String? _dropDownValue;
+  String? _amountError;
   final catList = FinalCategories().catList;
   final _user = FirebaseAuth.instance.currentUser;
 
   @override void initState() {
     _amountController.text = widget.budget;
     _dropDownValue = widget.category;
+    _amountController.addListener(_validateAmount);
     super.initState();
   }
 
   @override void dispose() {
     _amountController.dispose();
     super.dispose();
+  }
+
+  void _validateAmount() {
+    setState(() {
+      _amountError = NumberValidator.validate(_amountController.text);
+    });
   }
 
   @override
@@ -72,6 +81,7 @@ class _NewBudgetDialogState extends State<NewBudgetDialog> {
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10)
                 ),
+                errorText: _amountError
               ),
             ),
             const SizedBox(height: 16),
