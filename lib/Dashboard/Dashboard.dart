@@ -2,9 +2,12 @@ import 'package:cashflow/Categories/Categories.dart';
 import 'package:cashflow/Dashboard/IncomeExpense.dart';
 import 'package:cashflow/Dashboard/NewEntryDialog.dart';
 import 'package:cashflow/NavBar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:number_editing_controller/number_editing_controller.dart';
 
 import 'PieChartMiddle.dart';
@@ -28,6 +31,7 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
     month.number = DateTime.now().month;
     year.number = DateTime.now().year;
+    _checkReminderData();
   }
 
   @override
@@ -277,5 +281,31 @@ class _DashboardState extends State<Dashboard> {
         builder: (_) => const NewEntryDialog()
     );
     setState(() {});
+  }
+
+  _checkReminderData() async {
+    final user = FirebaseAuth.instance.currentUser;
+    QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection("entries").doc(user!.uid).collection("Reminder").get();
+    for(var entry in snapshot.docs){
+      if(entry['repeat'] == 'Monthly') {
+        if(int.parse(DateFormat("MM").format(entry['date'].toDate())) != DateTime.now().month || int.parse(DateFormat("yyyy").format(entry['date'].toDate())) != DateTime.now().year){
+          FirebaseFirestore.instance.collection("entries").doc(user.uid).collection("Reminder").doc(entry.id).update(
+              {
+                'date': DateTime.now(),
+                'paid': false
+              }
+          );
+        }
+      } else {
+        if(int.parse(DateFormat("yyyy").format(entry['date'].toDate())) != DateTime.now().year) {
+          FirebaseFirestore.instance.collection("entries").doc(user.uid).collection("Reminder").doc(entry.id).update(
+              {
+                'date': DateTime.now(),
+                'paid': false
+              }
+          );
+        }
+      }
+    }
   }
 }
