@@ -1,5 +1,6 @@
 import 'package:cashflow/Data/Reminders.dart';
 import 'package:cashflow/Reminder/NewReminderDialog.dart';
+import 'package:cashflow/Reminder/isPaidDialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -77,6 +78,7 @@ class _ReminderState extends State<Reminder> {
                                     : Column(
                                         children: [
                                           GestureDetector(
+                                            onTap: () => _changePaidStatus(mapEntry.value.title, mapEntry.value.amount, mapEntry.value.repeat, mapEntry.value.paid),
                                             onLongPress: () => _delete(mapEntry.value.title, mapEntry.value.amount, mapEntry.value.repeat),
                                             child: Container(
                                               height: 80,
@@ -188,6 +190,14 @@ class _ReminderState extends State<Reminder> {
             )
           ],
         )
+    );
+    setState(() {});
+  }
+
+  _changePaidStatus(String title, double amount, String repeat, bool isPaid) async {
+    await showDialog(
+        context: context,
+        builder: (_) => IsPaid(title, amount, repeat, isPaid)
     );
     setState(() {});
   }
