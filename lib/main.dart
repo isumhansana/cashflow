@@ -3,6 +3,7 @@ import 'package:cashflow/Authentication/registerForm.dart';
 import 'package:cashflow/Budget/Budget.dart';
 import 'package:cashflow/Dashboard/Dashboard.dart';
 import 'package:cashflow/Profile/ProfileScreen.dart';
+import 'package:cashflow/Reminder/PaidReminders.dart';
 import 'package:cashflow/Reminder/Reminder.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,6 +49,7 @@ class _MyAppState extends State<MyApp> {
         '/dashboard': (context) => const Dashboard(),
         '/budget': (context) => const Budget(),
         '/reminder': (context) => const Reminder(),
+        '/paidReminder': (context) => const PaidReminders(),
         '/profile' : (context) => const ProfileScreen(),
         '/forgotPassword': (context) => const ForgotPassword(),
       },

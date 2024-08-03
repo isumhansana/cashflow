@@ -27,6 +27,17 @@ class _ReminderState extends State<Reminder> {
         ),
         centerTitle: true,
         backgroundColor: const Color(0xFF102C40),
+        actions: [
+          PopupMenuButton(
+              iconColor: Colors.white,
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                    onTap: () => Navigator.pushNamed(context, '/paidReminder'),
+                    child: const Text("View Already Paid Reminders")
+                )
+              ]
+          )
+        ],
       ),
       bottomNavigationBar: NavBar(myIndex),
       floatingActionButton: FloatingActionButton(
