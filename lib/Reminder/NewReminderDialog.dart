@@ -135,7 +135,8 @@ class _NewReminderDialogState extends State<NewReminderDialog> {
           .add({
         'title': _titleController.text,
         'amount': _amountController.text,
-        'repeat': _dropDownValue
+        'repeat': _dropDownValue,
+        'paid': false
       });
       Navigator.pop(context);
       _amountController.clear();
