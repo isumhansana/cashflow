@@ -37,13 +37,34 @@ class _IsPaidState extends State<IsPaid> {
           "Change the Paid Status of $title Reminder",
           style: const TextStyle(fontSize: 18)
       ),
-      content: Switch(
-          value: isPaid,
-          onChanged: (value) {
-            setState(() {
-              isPaid = value;
-            });
-          }
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Switch(
+              value: isPaid,
+              onChanged: (value) {
+                setState(() {
+                  isPaid = value;
+                });
+              }
+          ),
+          isPaid
+              ? const Text(
+                  "Paid",
+                  style: TextStyle(
+                      color: Colors.green,
+                      fontSize: 16
+                  )
+                )
+              : const Text(
+                  "Not Paid",
+                  style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 16
+                  )
+                )
+        ],
       ),
       actions: [
         TextButton(
