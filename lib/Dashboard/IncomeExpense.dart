@@ -36,126 +36,70 @@ class _IncomeExpenseState extends State<IncomeExpense> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-              onPressed: (){
-                Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => false);
-              },
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              )
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+                onPressed: (){
+                  Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => false);
+                },
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                )
+            ),
+            title: const Text(
+              "Incomes & Expenses",
+              style: TextStyle(color: Colors.white),
+            ),
+            centerTitle: true,
+            backgroundColor: const Color(0xFF102C40),
           ),
-          title: const Text(
-            "Incomes & Expenses",
-            style: TextStyle(color: Colors.white),
-          ),
-          centerTitle: true,
-          backgroundColor: const Color(0xFF102C40),
-        ),
-        body: FutureBuilder(
-          future: FinalCategories().getData(year.toInt(), month.toInt()),
-          builder: (context, dataSnapshot) {
-            return dataSnapshot.connectionState == ConnectionState.waiting
-                ? const Center(child: CupertinoActivityIndicator())
-                : SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8),
-                    child: Column(
-                        children: [
-                          income==0
-                              ? const SizedBox()
-                              : ExpansionTile(
-                                  title: const Text(
-                                    "Incomes",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  shape: const Border(),
-                                  trailing: Text(
-                                    "Rs. ${income.toInt()}",
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        color: Color(0xFF03AB00),
-                                        fontWeight: FontWeight.normal
+          body: FutureBuilder(
+            future: FinalCategories().getData(year.toInt(), month.toInt()),
+            builder: (context, dataSnapshot) {
+              return dataSnapshot.connectionState == ConnectionState.waiting
+                  ? const Center(child: CupertinoActivityIndicator())
+                  : SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8),
+                      child: Column(
+                          children: [
+                            income==0
+                                ? const SizedBox()
+                                : ExpansionTile(
+                                    title: const Text(
+                                      "Incomes",
+                                      style: TextStyle(fontSize: 20),
                                     ),
-                                  ),
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
-                                      child: FutureBuilder(
-                                          future: IncomeList().getIncomes(),
-                                          builder: (context, snapshot) {
-                                            return snapshot.connectionState == ConnectionState.waiting
-                                                ? const SizedBox()
-                                                : Column(
-                                              children: snapshot.data!.asMap().entries.map((mapEntry) {
-                                                return Column(
-                                                  children: [
-                                                    int.parse(DateFormat("yyyy").format(mapEntry.value.date.toDate())) == year && int.parse(DateFormat("MM").format(mapEntry.value.date.toDate())) == month
-                                                        ? GestureDetector(
-                                                          onLongPress: () => _delete(mapEntry.value.description, mapEntry.value.amount, "Income", mapEntry.value.date),
-                                                          child: Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                              children: [
-                                                                  Text(
-                                                                    "Rs. ${mapEntry.value.amount.toInt()}   ${mapEntry.value.description}",
-                                                                    style: const TextStyle(fontSize: 16),
-                                                                  ),
-                                                                  Text(
-                                                                    DateFormat("dd MMM").format(
-                                                                        mapEntry.value.date.toDate()
-                                                                    ),
-                                                                    style: const TextStyle(fontSize: 16),
-                                                                  ),
-                                                                ]
-                                                            ),
-                                                        ) : const SizedBox()
-                                                        ],
-                                                );
-                                              }).toList(),
-                                            );
-                                          }),
+                                    shape: const Border(),
+                                    trailing: Text(
+                                      "Rs. ${income.toInt()}",
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          color: Color(0xFF03AB00),
+                                          fontWeight: FontWeight.normal
+                                      ),
                                     ),
-                                  ],
-                                ),
-                          FutureBuilder(
-                              future: ExpenseList().getExpenses(),
-                              builder: (context, snapshot) {
-                                return snapshot.connectionState == ConnectionState.waiting
-                                    ? const SizedBox()
-                                    : Column(
-                                      children: dataSnapshot.data!.asMap().entries.map((dataMapEntry){
-                                        return dataMapEntry.value.value==0
-                                            ? const SizedBox()
-                                            : ExpansionTile(
-                                                title: Text(
-                                                  dataMapEntry.value.title,
-                                                  style: const TextStyle(fontSize: 20),
-                                                ),
-                                                shape: const Border(),
-                                                trailing: Text(
-                                                  "Rs. ${dataMapEntry.value.value.toInt()}",
-                                                  style: const TextStyle(
-                                                      fontSize: 20,
-                                                      color: Color(0xFFFF3F3F),
-                                                      fontWeight: FontWeight.normal
-                                                  ),
-                                                ),
-                                                initiallyExpanded: dataMapEntry.value.title == title ? true : false,
-                                                children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                                                    child: Column(
-                                                      children: snapshot.data!.asMap().entries.map((mapEntry) {
-                                                        return Column(
-                                                          children: [
-                                                            int.parse(DateFormat("yyyy").format(mapEntry.value.date.toDate())) == year && int.parse(DateFormat("MM").format(mapEntry.value.date.toDate())) == month && dataMapEntry.value.title == mapEntry.value.category
-                                                                ? GestureDetector(
-                                                                  onLongPress: () => _delete(mapEntry.value.description, mapEntry.value.amount, mapEntry.value.category, mapEntry.value.date),
-                                                                  child: Row(
-                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                  children: [
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+                                        child: FutureBuilder(
+                                            future: IncomeList().getIncomes(),
+                                            builder: (context, snapshot) {
+                                              return snapshot.connectionState == ConnectionState.waiting
+                                                  ? const SizedBox()
+                                                  : Column(
+                                                children: snapshot.data!.asMap().entries.map((mapEntry) {
+                                                  return Column(
+                                                    children: [
+                                                      int.parse(DateFormat("yyyy").format(mapEntry.value.date.toDate())) == year && int.parse(DateFormat("MM").format(mapEntry.value.date.toDate())) == month
+                                                          ? GestureDetector(
+                                                            onLongPress: () => _delete(mapEntry.value.description, mapEntry.value.amount, "Income", mapEntry.value.date),
+                                                            child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                children: [
                                                                     Text(
                                                                       "Rs. ${mapEntry.value.amount.toInt()}   ${mapEntry.value.description}",
                                                                       style: const TextStyle(fontSize: 16),
@@ -167,24 +111,83 @@ class _IncomeExpenseState extends State<IncomeExpense> {
                                                                       style: const TextStyle(fontSize: 16),
                                                                     ),
                                                                   ]
-                                                                                                                              ),
-                                                                ) : const SizedBox()
+                                                              ),
+                                                          ) : const SizedBox()
                                                           ],
-                                                        );
-                                                      }).toList(),
+                                                  );
+                                                }).toList(),
+                                              );
+                                            }),
+                                      ),
+                                    ],
+                                  ),
+                            FutureBuilder(
+                                future: ExpenseList().getExpenses(),
+                                builder: (context, snapshot) {
+                                  return snapshot.connectionState == ConnectionState.waiting
+                                      ? const SizedBox()
+                                      : Column(
+                                        children: dataSnapshot.data!.asMap().entries.map((dataMapEntry){
+                                          return dataMapEntry.value.value==0
+                                              ? const SizedBox()
+                                              : ExpansionTile(
+                                                  title: Text(
+                                                    dataMapEntry.value.title,
+                                                    style: const TextStyle(fontSize: 20),
+                                                  ),
+                                                  shape: const Border(),
+                                                  trailing: Text(
+                                                    "Rs. ${dataMapEntry.value.value.toInt()}",
+                                                    style: const TextStyle(
+                                                        fontSize: 20,
+                                                        color: Color(0xFFFF3F3F),
+                                                        fontWeight: FontWeight.normal
                                                     ),
                                                   ),
-                                                ],
-                                        );
-                                      }).toList(),
-                                    );
-                              }),
-                        ],
-                                ),
-                  ),
-                );
-          }
-        ));
+                                                  initiallyExpanded: dataMapEntry.value.title == title ? true : false,
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                                      child: Column(
+                                                        children: snapshot.data!.asMap().entries.map((mapEntry) {
+                                                          return Column(
+                                                            children: [
+                                                              int.parse(DateFormat("yyyy").format(mapEntry.value.date.toDate())) == year && int.parse(DateFormat("MM").format(mapEntry.value.date.toDate())) == month && dataMapEntry.value.title == mapEntry.value.category
+                                                                  ? GestureDetector(
+                                                                    onLongPress: () => _delete(mapEntry.value.description, mapEntry.value.amount, mapEntry.value.category, mapEntry.value.date),
+                                                                    child: Row(
+                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                        "Rs. ${mapEntry.value.amount.toInt()}   ${mapEntry.value.description}",
+                                                                        style: const TextStyle(fontSize: 16),
+                                                                      ),
+                                                                      Text(
+                                                                        DateFormat("dd MMM").format(
+                                                                            mapEntry.value.date.toDate()
+                                                                        ),
+                                                                        style: const TextStyle(fontSize: 16),
+                                                                      ),
+                                                                    ]
+                                                                                                                                ),
+                                                                  ) : const SizedBox()
+                                                            ],
+                                                          );
+                                                        }).toList(),
+                                                      ),
+                                                    ),
+                                                  ],
+                                          );
+                                        }).toList(),
+                                      );
+                                }),
+                          ],
+                                  ),
+                    ),
+                  );
+            }
+          )),
+    );
   }
 
   Future<void> _delete(String description, double amount, String category, Timestamp date) async {
