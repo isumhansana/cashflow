@@ -33,7 +33,10 @@ class _IsPaidState extends State<IsPaid> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Change the Paid Status of $title Reminder"),
+      title: Text(
+          "Change the Paid Status of $title Reminder",
+          style: const TextStyle(fontSize: 18)
+      ),
       content: Switch(
           value: isPaid,
           onChanged: (value) {
