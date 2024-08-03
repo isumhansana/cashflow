@@ -61,61 +61,63 @@ class _ReminderState extends State<Reminder> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: snapshot.data!.asMap().entries.map((mapEntry){
-                                return Column(
-                                  children: [
-                                    GestureDetector(
-                                      onLongPress: () => _delete(mapEntry.value.title, mapEntry.value.amount, mapEntry.value.repeat),
-                                      child: Container(
-                                        height: 80,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.black
+                                return mapEntry.value.paid == true
+                                    ? const SizedBox()
+                                    : Column(
+                                        children: [
+                                          GestureDetector(
+                                            onLongPress: () => _delete(mapEntry.value.title, mapEntry.value.amount, mapEntry.value.repeat),
+                                            child: Container(
+                                              height: 80,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: Colors.black
+                                                ),
+                                                borderRadius: const BorderRadius.all(
+                                                   Radius.circular(10)
+                                                )
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          mapEntry.value.title,
+                                                          style: const TextStyle(
+                                                            fontWeight: FontWeight.bold,
+                                                            fontSize: 20
+                                                          ),
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Text(
+                                                              "Rs. ${mapEntry.value.amount.toInt()}",
+                                                              style: const TextStyle(
+                                                                fontSize: 20
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              "  /${mapEntry.value.repeat == "Monthly" ? "mo" : "yr"}",
+                                                              style: const TextStyle(
+                                                                fontSize: 14
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      ],
+                                                     ),
+                                                   ],
+                                                ),
                                           ),
-                                          borderRadius: const BorderRadius.all(
-                                             Radius.circular(10)
-                                          )
                                         ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    mapEntry.value.title,
-                                                    style: const TextStyle(
-                                                      fontWeight: FontWeight.bold,
-                                                      fontSize: 20
-                                                    ),
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                        "Rs. ${mapEntry.value.amount.toInt()}",
-                                                        style: const TextStyle(
-                                                          fontSize: 20
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        "  /${mapEntry.value.repeat == "Monthly" ? "mo" : "yr"}",
-                                                        style: const TextStyle(
-                                                          fontSize: 14
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
-                                               ),
-                                             ],
-                                          ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 20),
-                              ],
-                            );
+                                      ),
+                                      const SizedBox(height: 20),
+                                    ],
+                                  );
                         }).toList(),
                       ),
                     ]

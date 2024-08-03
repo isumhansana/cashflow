@@ -5,11 +5,13 @@ class Reminders {
   final String title;
   final double amount;
   final String repeat;
+  final bool paid;
 
   Reminders({
     required this.title,
     required this.amount,
     required this.repeat,
+    required this.paid
   });
 }
 
@@ -24,7 +26,8 @@ class ReminderList {
           Reminders(
               title: entry['title'],
               amount: double.parse(entry['amount']),
-              repeat: entry['repeat']
+              repeat: entry['repeat'],
+              paid: entry['paid']
           )
       );
     }).toList();
