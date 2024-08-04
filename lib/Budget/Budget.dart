@@ -43,81 +43,83 @@ class _BudgetState extends State<Budget> {
         builder: (context, snapshot) {
           return snapshot.connectionState == ConnectionState.waiting
               ? const Center(child: CupertinoActivityIndicator())
-              : Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Edit Your Budgets",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25
+              : Scrollbar(
+                child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Edit Your Budgets",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 20),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: snapshot.data!.asMap().entries.map((mapEntry){
-                              final budget = mapEntry.value.budget;
-                              if(budget==null){
-                                return const SizedBox();
-                              }else {
-                                return Column(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () => _newBudget(mapEntry.value.title, budget.toInt().toString()),
-                                      onLongPress: () => _delete(mapEntry.value.title),
-                                      child: Container(
-                                        height: 80,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.black
-                                            ),
-                                            borderRadius: const BorderRadius.all(
-                                                Radius.circular(10)
-                                            )
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    mapEntry.value.title,
-                                                    style: const TextStyle(
-                                                        fontWeight: FontWeight.bold,
-                                                        fontSize: 20
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    "Rs. ${budget.toInt()}",
-                                                    style: const TextStyle(
-                                                        fontSize: 20
-                                                    ),
-                                                  )
-                                                ],
+                            const SizedBox(height: 20),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: snapshot.data!.asMap().entries.map((mapEntry){
+                                final budget = mapEntry.value.budget;
+                                if(budget==null){
+                                  return const SizedBox();
+                                }else {
+                                  return Column(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () => _newBudget(mapEntry.value.title, budget.toInt().toString()),
+                                        onLongPress: () => _delete(mapEntry.value.title),
+                                        child: Container(
+                                          height: 80,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.black
                                               ),
-                                            ],
+                                              borderRadius: const BorderRadius.all(
+                                                  Radius.circular(10)
+                                              )
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      mapEntry.value.title,
+                                                      style: const TextStyle(
+                                                          fontWeight: FontWeight.bold,
+                                                          fontSize: 20
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "Rs. ${budget.toInt()}",
+                                                      style: const TextStyle(
+                                                          fontSize: 20
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 20),
-                                  ],
-                                );
-                              }
-                            }).toList(),
-                          ),
-                        ]
+                                      const SizedBox(height: 20),
+                                    ],
+                                  );
+                                }
+                              }).toList(),
+                            ),
+                          ]
+                      ),
                     ),
-                  ),
-          );
+                          ),
+              );
         }
       ),
     );

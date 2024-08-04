@@ -150,97 +150,101 @@ class _DashboardState extends State<Dashboard> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: SizedBox(
-                    height: (MediaQuery.of(context).size.height)/2.475,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Categories",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 25
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: dataSnapshot.data!.asMap().entries.map((mapEntry){
-                                  final budget = mapEntry.value.budget;
-                                  final value = mapEntry.value.value;
-                                  return Column(
-                                    children: [
-                                      mapEntry.value.value==0
-                                          ? const SizedBox.shrink()
-                                          : Column(
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => IncomeExpense(year.number!.toInt(), month.number!.toInt(), mapEntry.value.title))),
-                                                child: Container(
-                                                    decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            color: Colors.black
+                SizedBox(
+                  child: Scrollbar(
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: SizedBox(
+                        height: (MediaQuery.of(context).size.height)/2.475,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Categories",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: dataSnapshot.data!.asMap().entries.map((mapEntry){
+                                      final budget = mapEntry.value.budget;
+                                      final value = mapEntry.value.value;
+                                      return Column(
+                                        children: [
+                                          mapEntry.value.value==0
+                                              ? const SizedBox.shrink()
+                                              : Column(
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => IncomeExpense(year.number!.toInt(), month.number!.toInt(), mapEntry.value.title))),
+                                                    child: Container(
+                                                        decoration: BoxDecoration(
+                                                            border: Border.all(
+                                                                color: Colors.black
+                                                            ),
+                                                            borderRadius: const BorderRadius.all(
+                                                                Radius.circular(10)
+                                                            )
                                                         ),
-                                                        borderRadius: const BorderRadius.all(
-                                                            Radius.circular(10)
-                                                        )
-                                                    ),
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                                                      child: Column(
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                                                          child: Column(
                                                             children: [
-                                                              Text(
-                                                                mapEntry.value.title,
+                                                              Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                children: [
+                                                                  Text(
+                                                                    mapEntry.value.title,
+                                                                    style: TextStyle(
+                                                                        color: mapEntry.value.color,
+                                                                        fontWeight: FontWeight.bold,
+                                                                        fontSize: 20
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    "Rs. ${value.toInt()}",
+                                                                    style: const TextStyle(
+                                                                      fontSize: 20
+                                                                    ),
+                                                                  )
+                                                          ],
+                                                        ),
+                                                        const SizedBox(height: 10),
+                                                        Row(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            children: [
+                                                              budget==null
+                                                                  ? const Text("No budget")
+                                                                  : Text(
+                                                                "Remaining Budget: Rs. ${(budget-value).toInt()}",
                                                                 style: TextStyle(
-                                                                    color: mapEntry.value.color,
-                                                                    fontWeight: FontWeight.bold,
-                                                                    fontSize: 20
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                "Rs. ${value.toInt()}",
-                                                                style: const TextStyle(
-                                                                  fontSize: 20
+                                                                    color: Color(budget>value? 0xFF03AB00: (budget<value? 0xFFF60707: 0xFF000000)),
+                                                                    fontSize: 15
                                                                 ),
                                                               )
+                                                            ]
+                                                        ),
                                                       ],
                                                     ),
-                                                    const SizedBox(height: 10),
-                                                    Row(
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        children: [
-                                                          budget==null
-                                                              ? const Text("No budget")
-                                                              : Text(
-                                                            "Remaining Budget: Rs. ${(budget-value).toInt()}",
-                                                            style: TextStyle(
-                                                                color: Color(budget>value? 0xFF03AB00: (budget<value? 0xFFF60707: 0xFF000000)),
-                                                                fontSize: 15
-                                                            ),
-                                                          )
-                                                        ]
+                                                        ),
                                                     ),
-                                                  ],
-                                                ),
-                                                    ),
-                                                ),
+                                                  ),
+                                                  const SizedBox(height: 20),
+                                                ],
                                               ),
-                                              const SizedBox(height: 20),
-                                            ],
-                                          ),
-                                    ],
-                                  );
-                                }).toList(),
+                                        ],
+                                      );
+                                    }).toList(),
+                                  ),
+                                ]
                               ),
-                            ]
-                          ),
+                        ),
+                      ),
                     ),
                   ),
                 )
