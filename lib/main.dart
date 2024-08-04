@@ -2,6 +2,7 @@ import 'package:cashflow/Authentication/login.dart';
 import 'package:cashflow/Authentication/registerForm.dart';
 import 'package:cashflow/Budget/Budget.dart';
 import 'package:cashflow/Dashboard/Dashboard.dart';
+import 'package:cashflow/Data/Reminders.dart';
 import 'package:cashflow/Profile/ProfileScreen.dart';
 import 'package:cashflow/Reminder/PaidReminders.dart';
 import 'package:cashflow/Reminder/Reminder.dart';
@@ -9,11 +10,33 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:workmanager/workmanager.dart';
 
 import 'Authentication/ForgotPassword.dart';
 
+void callbackDispatcher() {
+  Workmanager().executeTask((taskName, inputData) async {
+    List<Reminders> reminderList = await ReminderList().getReminders();
+    if(taskName == "Monthly") {
+      for(var reminder in reminderList) {
+        if(reminder.repeat == "Monthly" && !reminder.paid){
+          print("Send Monthly Notification");
+        }
+      }
+    } else {
+      for(var reminder in reminderList) {
+        if(reminder.repeat == "Yearly" && !reminder.paid){
+          print("Send Yearly Notification");
+        }
+      }
+    }
+    return Future.value(true);
+  });
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Workmanager().initialize(callbackDispatcher);
   await Firebase.initializeApp();
   FirebaseFirestore.instance.settings = const Settings(
     persistenceEnabled: true,
