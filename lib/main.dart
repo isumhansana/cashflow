@@ -36,11 +36,12 @@ void callbackDispatcher() {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Workmanager().initialize(callbackDispatcher);
   await Firebase.initializeApp();
   FirebaseFirestore.instance.settings = const Settings(
     persistenceEnabled: true,
   );
+  Workmanager().initialize(callbackDispatcher);
+
 
   runApp(const MyApp());
 }
@@ -58,6 +59,22 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     _checkLoggedIn();
+    Workmanager().registerPeriodicTask(
+        "monthlyReminder",
+        "Monthly",
+        constraints: Constraints(networkType: NetworkType.connected),
+        frequency: const Duration(days: 10),
+        initialDelay: const Duration(days: 1)
+    );
+
+    Workmanager().registerPeriodicTask(
+        "yearlyReminder",
+        "Yearly",
+        constraints: Constraints(networkType: NetworkType.connected),
+        frequency: const Duration(days: 90),
+        initialDelay: const Duration(days: 1)
+    );
+
     super.initState();
   }
 
