@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cashflow/Authentication/login.dart';
 import 'package:cashflow/Authentication/registerForm.dart';
 import 'package:cashflow/Budget/Budget.dart';
@@ -16,17 +17,34 @@ import 'Authentication/ForgotPassword.dart';
 
 void callbackDispatcher() {
   Workmanager().executeTask((taskName, inputData) async {
+    int index = 0;
     List<Reminders> reminderList = await ReminderList().getReminders();
     if(taskName == "Monthly") {
       for(var reminder in reminderList) {
+        index += 1;
         if(reminder.repeat == "Monthly" && !reminder.paid){
-          print("Send Monthly Notification");
+          await AwesomeNotifications().createNotification(
+              content: NotificationContent(
+                  id: index,
+                  channelKey: 'monthly',
+                  title: reminder.title,
+                  body: "You have to do a ${reminder.repeat} payment of Rs. ${reminder.amount}"
+              )
+          );
         }
       }
     } else {
       for(var reminder in reminderList) {
+        index += 1;
         if(reminder.repeat == "Yearly" && !reminder.paid){
-          print("Send Yearly Notification");
+          await AwesomeNotifications().createNotification(
+              content: NotificationContent(
+                  id: index,
+                  channelKey: 'yearly',
+                  title: reminder.title,
+                  body: "You have to do a ${reminder.repeat} payment of Rs. ${reminder.amount}"
+              )
+          );
         }
       }
     }
@@ -40,7 +58,24 @@ void main() async {
   FirebaseFirestore.instance.settings = const Settings(
     persistenceEnabled: true,
   );
-  Workmanager().initialize(callbackDispatcher);
+  await Workmanager().initialize(callbackDispatcher);
+  AwesomeNotifications().initialize(
+      'assets/imgs/cashflow_logo.png',
+      [
+        NotificationChannel(
+          channelKey: 'monthly',
+          channelName: 'CashFlow Monthly',
+          channelDescription: 'CashFlow Monthly Channel',
+          playSound: true
+        ),
+        NotificationChannel(
+            channelKey: 'yearly',
+            channelName: 'CashFlow Yearly',
+            channelDescription: 'CashFlow Yearly Channel',
+            playSound: true
+        )
+      ]
+  );
 
 
   runApp(const MyApp());
