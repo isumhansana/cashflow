@@ -23,5 +23,3 @@ Contributions are welcome! Please fork the repository and submit a pull request.
 For any inquiries, please contact [Isum Hansana](mailto:isum.hansana@gmail.com).
 
 ---
-
-Created By Isum Hansana as the final project of Flutter Developer Certificate Course Offered By LiveCollege
