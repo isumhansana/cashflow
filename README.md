@@ -20,4 +20,4 @@
 Contributions are welcome! Please fork the repository and submit a pull request.
 
 ## Contact
-For any inquiries, please contact [Isum Hansana](mailto:isum.hansana@gmail.com).
+For any inquiries, please [contact me](mailto:isum.hansana@gmail.com).
