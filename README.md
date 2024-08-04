@@ -1,7 +1,7 @@
 # CashFlow
 
 ## Overview
-The **CashFlow** is an Android application developed using **Flutter** and **Dart**. It allows users to manage their daily expenses, set up payment reminders, and create budgets for different expense categories. The app uses **Firebase** for authentication and **FireStore** for data storage.
+**CashFlow** is an Android application developed using **Flutter** and **Dart**. It allows users to manage their daily expenses, set up payment reminders, and create budgets for different expense categories. The app uses **Firebase** for authentication and **FireStore** for data storage.
 
 ## Features
 - **Expense Tracking**: Add and track daily expenses and incomes.
