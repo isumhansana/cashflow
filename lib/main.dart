@@ -18,6 +18,7 @@ import 'package:workmanager/workmanager.dart';
 import 'Authentication/ForgotPassword.dart';
 import 'network_error.dart';
 
+@pragma('vm:entry-point')
 void callbackDispatcher() {
   Workmanager().executeTask((taskName, inputData) async {
     int index = 0;
