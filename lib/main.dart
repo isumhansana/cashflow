@@ -100,7 +100,6 @@ class _MyAppState extends State<MyApp> {
         "Monthly",
         constraints: Constraints(networkType: NetworkType.connected),
         frequency: const Duration(days: 10),
-        initialDelay: const Duration(days: 1)
     );
 
     Workmanager().registerPeriodicTask(
@@ -108,7 +107,6 @@ class _MyAppState extends State<MyApp> {
         "Yearly",
         constraints: Constraints(networkType: NetworkType.connected),
         frequency: const Duration(days: 90),
-        initialDelay: const Duration(days: 1)
     );
 
     _checkLoggedIn();
