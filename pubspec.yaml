@@ -45,6 +45,7 @@ dependencies:
   awesome_notifications: ^0.9.3+1
   permission_handler: ^11.3.1
   connectivity_plus: ^6.0.4
+  restart_app: ^1.2.1
 
 dev_dependencies:
   flutter_test:

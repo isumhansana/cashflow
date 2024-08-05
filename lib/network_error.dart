@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restart_app/restart_app.dart';
 
 class NetworkErrorPage extends StatelessWidget {
   const NetworkErrorPage({super.key});
@@ -33,7 +34,9 @@ class NetworkErrorPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
                 MaterialButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    Restart.restartApp();
+                  },
                   color: const Color(0xff235AE8),
                   minWidth: 150,
                   height: 50,
