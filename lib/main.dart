@@ -102,7 +102,6 @@ class _MyAppState extends State<MyApp> {
     Workmanager().registerPeriodicTask(
         "monthlyReminder",
         "Monthly",
-        constraints: Constraints(networkType: NetworkType.connected),
         frequency: const Duration(days: 10),
         initialDelay: const Duration(hours: 1)
     );
@@ -110,7 +109,6 @@ class _MyAppState extends State<MyApp> {
     Workmanager().registerPeriodicTask(
         "yearlyReminder",
         "Yearly",
-        constraints: Constraints(networkType: NetworkType.connected),
         frequency: const Duration(days: 90),
         initialDelay: const Duration(hours: 1)
     );
