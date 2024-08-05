@@ -8,6 +8,7 @@ import 'package:cashflow/Profile/ProfileScreen.dart';
 import 'package:cashflow/Reminder/PaidReminders.dart';
 import 'package:cashflow/Reminder/Reminder.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,6 +16,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'Authentication/ForgotPassword.dart';
+import 'network_error.dart';
 
 void callbackDispatcher() {
   Workmanager().executeTask((taskName, inputData) async {
@@ -92,6 +94,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var isLoggedIn = false;
+  var connectivityResult = false;
 
   @override
   void initState() {
@@ -111,6 +114,7 @@ class _MyAppState extends State<MyApp> {
         initialDelay: const Duration(hours: 1)
     );
 
+    _checkConnectivity();
     _checkLoggedIn();
     super.initState();
   }
@@ -119,7 +123,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "CashFlow",
-      home: isLoggedIn ? const Dashboard() : const Login(),
+      home: connectivityResult
+          ? (isLoggedIn ? const Dashboard() : const Login())
+          : const NetworkErrorPage(),
       routes: {
         '/login' : (context) => const Login(),
         '/register' : (context) => const Register(),
@@ -141,5 +147,14 @@ class _MyAppState extends State<MyApp> {
         });
       }
     });
+  }
+
+  _checkConnectivity() async {
+    var connectivity = await Connectivity().checkConnectivity();
+    if(connectivity.contains(ConnectivityResult.mobile) || connectivity.contains(ConnectivityResult.wifi)){
+      setState(() {
+        connectivityResult = true;
+      });
+    }
   }
 }
