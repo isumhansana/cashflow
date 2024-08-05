@@ -82,6 +82,20 @@ void main() async {
       ]
   );
 
+  await Workmanager().registerPeriodicTask(
+      "monthlyReminder",
+      "Monthly",
+      frequency: const Duration(days: 10),
+      initialDelay: const Duration(hours: 1)
+  );
+
+  await Workmanager().registerPeriodicTask(
+      "yearlyReminder",
+      "Yearly",
+      frequency: const Duration(days: 90),
+      initialDelay: const Duration(hours: 1)
+  );
+
 
   runApp(const MyApp());
 }
@@ -99,20 +113,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    Workmanager().registerPeriodicTask(
-        "monthlyReminder",
-        "Monthly",
-        frequency: const Duration(days: 10),
-        initialDelay: const Duration(hours: 1)
-    );
-
-    Workmanager().registerPeriodicTask(
-        "yearlyReminder",
-        "Yearly",
-        frequency: const Duration(days: 90),
-        initialDelay: const Duration(hours: 1)
-    );
-
     _checkConnectivity();
     _checkLoggedIn();
     super.initState();
