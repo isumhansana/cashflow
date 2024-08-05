@@ -62,7 +62,7 @@ void main() async {
   await Workmanager().initialize(callbackDispatcher);
   await Permission.notification.request();
   AwesomeNotifications().initialize(
-      'assets/imgs/cashflow_logo.png',
+      'resource://drawable/cashflow_logo_noti',
       [
         NotificationChannel(
           channelKey: 'monthly',
