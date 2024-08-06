@@ -16,49 +16,60 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'Authentication/ForgotPassword.dart';
+import 'firebase_options.dart';
 import 'network_error.dart';
 
 @pragma('vm:entry-point')
-void callbackDispatcher() {
+void callbackDispatcher() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform
+  );
   Workmanager().executeTask((taskName, inputData) async {
-    int index = 0;
-    List<Reminders> reminderList = await ReminderList().getReminders();
-    if(taskName == "Monthly") {
-      for(var reminder in reminderList) {
-        index += 1;
-        if(reminder.repeat == "Monthly" && !reminder.paid){
-          await AwesomeNotifications().createNotification(
-              content: NotificationContent(
-                  id: index,
-                  channelKey: 'monthly',
-                  title: reminder.title,
-                  body: "You have to do a ${reminder.repeat} payment of Rs. ${reminder.amount}"
-              )
-          );
+    if(FirebaseAuth.instance.currentUser != null){
+      int index = 0;
+      List<Reminders> reminderList = await ReminderList().getReminders();
+      if(taskName == "Monthly") {
+        for(var reminder in reminderList) {
+          index += 1;
+          if(reminder.repeat == "Monthly" && !reminder.paid){
+            await AwesomeNotifications().createNotification(
+                content: NotificationContent(
+                    id: index,
+                    channelKey: 'monthly',
+                    title: reminder.title,
+                    body: "You have to do a ${reminder.repeat} payment of Rs. ${reminder.amount}"
+                )
+            );
+          }
+        }
+      } else {
+        for(var reminder in reminderList) {
+          index += 1;
+          if(reminder.repeat == "Yearly" && !reminder.paid){
+            await AwesomeNotifications().createNotification(
+                content: NotificationContent(
+                    id: index,
+                    channelKey: 'yearly',
+                    title: reminder.title,
+                    body: "You have to do a ${reminder.repeat} payment of Rs. ${reminder.amount}"
+                )
+            );
+          }
         }
       }
+      return Future.value(true);
     } else {
-      for(var reminder in reminderList) {
-        index += 1;
-        if(reminder.repeat == "Yearly" && !reminder.paid){
-          await AwesomeNotifications().createNotification(
-              content: NotificationContent(
-                  id: index,
-                  channelKey: 'yearly',
-                  title: reminder.title,
-                  body: "You have to do a ${reminder.repeat} payment of Rs. ${reminder.amount}"
-              )
-          );
-        }
-      }
+      return Future.value(false);
     }
-    return Future.value(true);
   });
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
   FirebaseFirestore.instance.settings = const Settings(
     persistenceEnabled: true,
   );
@@ -86,14 +97,16 @@ void main() async {
       "monthlyReminder",
       "Monthly",
       frequency: const Duration(days: 10),
-      initialDelay: const Duration(hours: 1)
+      initialDelay: const Duration(hours: 1),
+      constraints: Constraints(networkType: NetworkType.connected)
   );
 
   await Workmanager().registerPeriodicTask(
       "yearlyReminder",
       "Yearly",
       frequency: const Duration(days: 90),
-      initialDelay: const Duration(hours: 1)
+      initialDelay: const Duration(hours: 1),
+      constraints: Constraints(networkType: NetworkType.connected)
   );
 
 
