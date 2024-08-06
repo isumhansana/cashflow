@@ -97,7 +97,7 @@ void main() async {
       "monthlyReminder",
       "Monthly",
       frequency: const Duration(days: 10),
-      initialDelay: const Duration(hours: 1),
+      initialDelay: const Duration(minutes: 5),
       constraints: Constraints(networkType: NetworkType.connected)
   );
 
@@ -105,7 +105,7 @@ void main() async {
       "yearlyReminder",
       "Yearly",
       frequency: const Duration(days: 90),
-      initialDelay: const Duration(hours: 1),
+      initialDelay: const Duration(minutes: 5),
       constraints: Constraints(networkType: NetworkType.connected)
   );
 
