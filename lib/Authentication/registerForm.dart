@@ -186,13 +186,14 @@ class _RegisterState extends State<Register> {
   _signup() async {
     final user = await _auth.createUserWithEmailAndPassword(_emailController.text, _passwordController.text);
     if (user != null) {
+      final loggedInUser = await _auth.loginWithEmailAndPassword(_emailController.text, _passwordController.text);
       await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
         'name': _usernameController.text.trim(),
         'email': user.email!.trim()
       });
-      Navigator.pushReplacementNamed(context, '/login');
+      Navigator.pushReplacementNamed(context, '/dashboard');
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Account Created! Please Login to Continue"))
+          SnackBar(content: Text("Account Created! Logged In as ${loggedInUser!.email}"))
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
