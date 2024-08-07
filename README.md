@@ -20,19 +20,19 @@
 Here are some screenshots of the app:
 
 1. **Login and Signup Screens**:
-   ![signup_login](https://github.com/user-attachments/assets/e143b708-d157-4638-ab46-b3b9061a350a)
+   ![signup_login](https://github.com/user-attachments/assets/ff6a4f2a-e483-4a0f-bc2e-ec29dea8c181)
 
 2. **Dashboard**:
-   ![dashboard](https://github.com/user-attachments/assets/0a6b38a7-42c4-4da2-ae6d-8bf3aee21348)
+   ![dashboard](https://github.com/user-attachments/assets/fe532d56-32be-4c18-93b2-15eaed483811)
 
 3. **Incomes & Expenses Screen**:
-   ![income_expense](https://github.com/user-attachments/assets/8f003802-724c-4dc9-904c-a1714ce5fba7)
+   ![income_expense](https://github.com/user-attachments/assets/d36421d6-32c9-489d-9da3-84afc32187cb)
    
 4. **Budgets Screen**:
-   ![budget](https://github.com/user-attachments/assets/2d74c0f3-ceda-4dfc-9c91-b82e65680f27)
+   ![budget](https://github.com/user-attachments/assets/0bdbfa33-585b-414c-80c2-e9cf7d7b5018)
 
 5. **Reminders Screen**:
-   ![reminder](https://github.com/user-attachments/assets/a536500a-e982-4e3a-b3ac-b7a08dce2c75)
+   ![reminder](https://github.com/user-attachments/assets/fe680bc4-b807-46a3-b3c3-6f95d052cf33)
 
 
 ## Contributing
